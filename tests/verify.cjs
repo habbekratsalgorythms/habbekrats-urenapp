@@ -1,6 +1,6 @@
 
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const path=require('path');const root=path.resolve(__dirname,'..');const pages=Object.fromEntries(['index.html','offertecalculator/index.html','studio/index.html','microservices/index.html','klyptiq/index.html','affiliate/index.html','uren/index.html'].map(p=>[p,fs.readFileSync(path.join(root,p),'utf8')]));
+const path=require('path');const root=path.resolve(__dirname,'..');const pages=Object.fromEntries(['index.html','offertecalculator/index.html','studio/index.html','microservices/index.html','klyptiq/index.html','affiliate/index.html','affiliate/redactiebeleid.html','uren/index.html','microservices/voorbeeldpakket.html'].map(p=>[p,fs.readFileSync(path.join(root,p),'utf8')]));
 let checks=[];
 for(const [path,html] of Object.entries(pages)){
  assert(html.startsWith('<!doctype html>'),path);
@@ -10,6 +10,11 @@ for(const [path,html] of Object.entries(pages)){
  }
 }
 function dom(){const elements={};return {elements,getElementById(id){return elements[id]||=( {value:'',textContent:'',disabled:false,hidden:true,children:[],addEventListener(type,fn){this[type]=fn},checkValidity(){return true},replaceChildren(){this.children=[]},append(...c){this.children.push(...c)}})},body:{appendChild(){}},createElement(){return {textContent:'',children:[],append(...c){this.children.push(...c)},click(){},remove(){}}}}}
+assert(pages['microservices/voorbeeldpakket.html'].match(/POST 0[1-9]|POST 10/g).length===10,'Need 10 actual sample posts');
+assert(pages['microservices/index.html'].includes('href="voorbeeldpakket.html"'),'Need public sample link');
+assert(pages['affiliate/index.html'].includes('href="redactiebeleid.html"'),'Need editorial policy link');
+assert(pages['affiliate/redactiebeleid.html'].includes('geen actieve affiliate-links'),'No fabricated commission claims');
+checks.push('Content service: 10 complete distinct sample posts and affiliate disclosure page linked');
 const script=pages['offertecalculator/index.html'].match(/<script>([\s\S]*?)<\/script>/)[1];
 const d=dom();const vals={hours:'2',visits:'1',labor:'24',travel:'1.95',material:'2',margin:'25',vat:'21'};
 for(const [id,v] of Object.entries(vals))d.getElementById(id).value=v;
