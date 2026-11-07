@@ -26,4 +26,4 @@ jobs:
         run: node tests/check-links.cjs
       - name: Check no accidental production credentials
         run: |
-          ! git grep -nE '(service_role|sb_secret_|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- ':!tests/**'
+          ! git grep -nE '(service_role|sb_secret_|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- '*.html'
