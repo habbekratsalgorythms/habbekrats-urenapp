@@ -47,3 +47,20 @@ Geen productiegegevens veranderd. Merge naar main kan GitHub Pages publiceren; e
 
 ## Ontbrekende zakelijke inrichting — bevestigd door eigenaar
 Er is nog geen KvK-nummer en er zijn nog geen betaalopties aangemaakt. Daarom uitsluitend vrijblijvende pilot-/offerteaanvragen. Geen fictieve KvK-, btw- of betaalgegevens invullen. Zakelijke registratie en betaalproviderverificatie vereisen feitelijke eigenaargegevens en diens identiteits-/bankverificatie; kosten alleen na expliciet akkoord. Geen betaling of aankoop in deze sessie gestart.
+
+## Aanvullend zelfstandig werkblok — 8 november 2026
+
+**Uitgevoerd in de bestaande draft-branch, nog niet op de live hoofdpagina:**
+
+1. **Urenapp** — read-only Supabase-securityreview. De organisaties-SELECT is eigenaargebonden, maar de app heeft al een fallback via het eigen lidmaatschapsrecord; een medewerker ziet mogelijk de generieke naam 'Team'. Geen aangetoonde datalekken en geen bewezen werkende multi-tenant pilot. Uitgebreide test-/releasevoorwaarden in [docs/UREN_RELEASE_SECURITY.md](docs/UREN_RELEASE_SECURITY.md). Geen databasewijziging uitgevoerd.
+2. **Offertecalculator** — drie prijs-/margescenario's, huidig tarief versus werkelijke brutomarge, jaarlijkse brutowinst en download van een lokale CSV toegevoegd. Geen opslag of verzending van invoer. Rekentests uitgebreid.
+3. **AI-microservices** — [volledig fictief voorbeeldpakket](microservices/voorbeeldpakket.html) van tien inhoudelijk verschillende captions en vijfweekse planning, gekoppeld aan de vrijblijvende briefing.
+4. **Klyptiq Gaming** — de lokale Kokoro-videomotor is al op de eigen GitHub-repo opgenomen. Een optionele versie met dynamisch wisselende captions en opvallendere visuals wordt afzonderlijk getest in een featurebranch; **niet gepubliceerd in Metricool**. Merk 7945934 en planning werden in de recente sessie wél live via de beschikbare Metricool-koppeling gecontroleerd: 42 Instagram-publicaties en één video voor elk van TikTok/YouTube gepland voor 8–17 nov. De eerdere vermelding 'Metricool-tools niet beschikbaar' in dit document was een historische beperking en geldt niet meer.
+5. **Affiliate / AI-influencer** — [redactiebeleid](affiliate/redactiebeleid.html) met expliciete beoordelingscriteria, disclosure-regels en grenzen voor virtuele presentatoren; nog geen programma, trackinglink of commissionering.
+
+**Verifieerbaar:** GitHub Actions [Five-track prelaunch quality checks](https://github.com/habbekratsalgorythms/habbekrats-urenapp/actions/runs/42426481383) = SUCCESS; controleert JavaScript-interacties, rekenbedragen, lokale CSV, negen HTML-pagina's, interne links en geen bekende private keys in gepubliceerde HTML. De eerdere workflowfout was een vals alarm doordat de controle zijn eigen zoekpatroon vond; dit is gecorrigeerd. **Geen browser-/mobiele handmatige test of echte twee-tenanttest geclaimd.**
+
+**Release blijft NO-GO:** PR #1 blijft draft en main is niet bijgewerkt. Er zijn nog geen geverifieerde zakelijke/betaalgegevens; er zijn geen live betaalstromen, klantmails of Social-posts gestart. Betaalde omzet is niet aangetoond.
+
+**Eigenaar:** voorlopig geen actie nodig voor documentatie en offline code. Vóór betaalde lancering: zakelijke identiteit, voorwaarden, betaalmogelijkheid en expliciete vrijgave; voor urenapp echte testaccounts en verificatie van rollen.
+**Jesse:** kanaalprofielen/branding afmaken en bij toekomstige echte posts beeld, geluid en status steekproefsgewijs controleren; geen financiële of codehandelingen vereist.
