@@ -6,16 +6,16 @@
 <section class="panel" id="invitePanel" style="display:none"><h2>Medewerkers uitnodigen</h2><p class="muted">Maak een persoonlijke uitnodigingscode. Deze kan één keer worden gebruikt en verloopt na 7 dagen. Deel de link uitsluitend met je medewerker.</p><div class="actions"><button id="createInvite" type="button">Nieuwe uitnodigingslink</button></div><div id="generatedInvite" style="display:none"><label for="inviteLink">Uitnodigingslink</label><input id="inviteLink" readonly><div class="actions"><button id="copyInvite" class="secondary" type="button">Link kopiëren</button></div></div></section>
 <section class="panel" id="joinPanel" style="display:none"><h2>Uitnodiging accepteren</h2><p class="muted">Heb je van je werkgever een uitnodigingscode gekregen? Log in en plak de code hier.</p><label for="joinCode">Uitnodigingscode</label><input id="joinCode" type="text" maxlength="48" autocomplete="off" placeholder="48 tekens"><div class="actions"><button id="acceptInvite" type="button">Deelnemen aan bedrijf</button></div></section>
 <section class="panel" id="clientPanel" style="display:none"><h2>Klanten</h2><div class="grid"><input id="clientName" placeholder="Naam nieuwe klant"><button id="addClient">Klant toevoegen</button></div></section>
-<section class="panel" id="entryPanel" style="display:none"><h2>Nieuwe registratie</h2><div class="grid"><div class="full"><label>Klant</label><select id="client"></select></div><div><label>Datum</label><input id="date" type="date"></div><div><label>Weeknummer</label><input id="week" disabled></div><div><label>Begin</label><input id="start" type="time" value="11:00"></div><div><label>Einde</label><input id="end" type="time" value="13:00"></div><div><label>Aantal personen</label><input id="persons" type="number" min="1" max="100" value="2"></div><div><label>Pauze per persoon (min)</label><input id="pause" type="number" min="0" max="1439" value="0"></div><div class="full"><label>Notities</label><textarea id="notes" maxlength="2000"></textarea></div></div><div class="metric" id="computed">4,00 manuren</div><div class="actions"><button id="save">Opslaan</button></div></section>
+<section class="panel" id="entryPanel" style="display:none"><h2>Nieuwe registratie</h2><div class="grid"><div class="full"><label>Klant</label><select id="client"></select></div><div><label>Datum</label><input id="date" type="date"></div><div><label>Weeknummer</label><input id="week" disabled></div><div><label>Begin</label><input id="start" type="time" value="11:00"></div><div><label>Einde</label><input id="end" type="time" value="13:00"></div><div><label>Aantal personen</label><input id="persons" type="number" min="1" max="100" value="2"></div><div><label>Pauze per persoon (min)</label><input id="pause" type="number" min="0" max="1439" value="0"></div><div class="full"><label>Notities</label><textarea id="notes" maxlength="2000"></textarea></div></div><div class="metric" id="computed">4,00 manuren</div><div class="actions"><button id="save">Opslaan</button></div><p id="saveStatus" role="status" aria-live="polite"></p></section>
 <section class="panel" id="statsPanel" style="display:none"><h2>Overzicht</h2><div class="grid"><div><label>Maand</label><input id="month" type="month"></div><div><label>Totaal manuren</label><div class="metric" id="monthTotal">0 uur</div></div></div><div class="actions"><button class="secondary" id="exportCsv">Download maandstaat (CSV)</button></div><p class="muted">CSV werkt in Excel en Google Spreadsheets. Een echte XLSX-export volgt.</p></section><section class="panel" id="reviewPanel" style="display:none"><h2>Ingediende uren goedkeuren</h2><div id="reviewItems"></div></section><section class="panel" id="listPanel" style="display:none"><h2>Mijn urenregistraties</h2><div id="entries"></div></section></div><p id="message"></p><small>Testversie: gebruik voorlopig geen echte personeels- of klantgegevens voordat de volledige beveiliging is getest.</small></main>
 <script type="module">
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.0';
 const db=createClient('https://tgpvissgdojcqgagyfpw.supabase.co','sb_publishable_2GYfeKtWuTS5Sk3Zxdn5Yw_oDmF56vG');
-const $=id=>document.getElementById(id);let user=null,org=null,isOwner=false,entryCache=[]; $('date').value=new Date().toLocaleDateString('en-CA');$('month').value=$('date').value.slice(0,7);
+const $=id=>document.getElementById(id);let user=null,org=null,isOwner=false,entryCache=[],saveLocked=false; $('date').value=new Date().toLocaleDateString('en-CA');$('month').value=$('date').value.slice(0,7);
 const err=e=>{ $('message').textContent=e?.message||String(e);$('message').className='err'; };
 const msg=s=>{ $('message').textContent=s; $('message').className='ok'; };
 const isoWeek=s=>{let d=new Date(s+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));return Math.ceil(((d-new Date(Date.UTC(d.getUTCFullYear(),0,1)))/86400000+1)/7)};
-function calc(){let a=$('start').value.split(':').map(Number),b=$('end').value.split(':').map(Number),p=Number($('pause').value),n=Number($('persons').value),mins=(b[0]*60+b[1]-a[0]*60-a[1]+1440)%1440;let ok=mins>0&&p>=0&&p<mins&&Number.isInteger(n)&&n>0&&n<=100;let total=ok?(mins-p)*n/60:0;$('computed').textContent=ok?total.toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2})+' manuren':'Controleer tijden, pauze en personen';$('save').disabled=!ok;return ok;}
+function calc(){let a=$('start').value.split(':').map(Number),b=$('end').value.split(':').map(Number),p=Number($('pause').value),n=Number($('persons').value),mins=(b[0]*60+b[1]-a[0]*60-a[1]+1440)%1440;let ok=mins>0&&p>=0&&p<mins&&Number.isInteger(n)&&n>0&&n<=100;let total=ok?(mins-p)*n/60:0;$('computed').textContent=ok?total.toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2})+' manuren':'Controleer tijden, pauze en personen';$('save').disabled=!ok||saveLocked;return ok;}
 ['start','end','pause','persons'].forEach(x=>$(x).addEventListener('input',calc));$('date').addEventListener('change',()=>{$('week').value=isoWeek($('date').value)});$('week').value=isoWeek($('date').value);calc();
 async function refresh(){const {data:{user:u}}=await db.auth.getUser();user=u;$('auth').style.display=u?'none':'block';$('app').style.display=u?'block':'none';if(!u)return;$('who').textContent=u.email;const {data,error}=await db.from('organizations').select('id,name,owner_id').limit(1);if(error)return err(error);org=data?.[0]||null;isOwner=org?.owner_id===user.id;if(org&&!isOwner){const role=await db.from('organization_members').select('role').eq('organization_id',org.id).eq('user_id',user.id).maybeSingle();if(role.error)return err(role.error);isOwner=role.data?.role==='admin';}if(!org){const mem=await db.from('organization_members').select('organization_id,role').eq('user_id',user.id).limit(1);if(mem.error)return err(mem.error);if(mem.data?.[0]){org={id:mem.data[0].organization_id,name:'Team'};isOwner=mem.data[0].role==='admin';}}$('orgMsg').textContent=org?'Bedrijf: '+org.name:'Maak eerst een bedrijf aan';$('neworg').style.display=org?'none':'block';$('clientPanel').style.display=isOwner?'block':'none';['entryPanel','listPanel','statsPanel'].forEach(x=>$(x).style.display=org?'block':'none');$('reviewPanel').style.display=isOwner?'block':'none';$('invitePanel').style.display=org&&org.owner_id===user.id?'block':'none';$('joinPanel').style.display=org?'none':'block';if(org){await loadClients();await loadEntries();await loadReviews();}}
 $('login').onclick=async()=>{let {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});error?authNotice(humanAuthError(error)):refresh()};
@@ -73,7 +73,37 @@ $('makeOrg').onclick=async()=>{if(!user)return;let {error}=await db.from('organi
 async function loadClients(){const {data,error}=await db.from('clients').select('id,name').eq('organization_id',org.id).order('name');if(error)return err(error);$('client').replaceChildren();(data||[]).forEach(c=>{$('client').add(new Option(c.name,c.id))})}
 $('addClient').onclick=async()=>{let name=$('clientName').value.trim();if(!name)return;let {error}=await db.from('clients').insert({organization_id:org.id,name});error?err(error):($('clientName').value='',loadClients())};
 async function loadEntries(){let {data,error}=await db.from('time_entries').select('id,work_date,start_time,end_time,person_count,total_person_minutes,status,notes').eq('organization_id',org.id).order('work_date',{ascending:false}).limit(100);if(error)return err(error);entryCache=data||[];updateStats();$('entries').replaceChildren();for(let x of data||[]){let row=document.createElement('div');row.className='item';let title=document.createElement('strong');title.textContent=x.work_date+' · '+(x.total_person_minutes/60).toLocaleString('nl-NL',{maximumFractionDigits:2})+' manuren';let sub=document.createElement('p');sub.textContent=x.person_count+' personen · '+x.start_time.slice(0,5)+'–'+x.end_time.slice(0,5)+' · '+x.status;row.append(title,sub);if(x.status==='draft'){let b=document.createElement('button');b.className='secondary';b.textContent='Indienen';b.onclick=async()=>{let {error}=await db.from('time_entries').update({status:'submitted'}).eq('id',x.id);error?err(error):loadEntries()};row.append(b)}$('entries').append(row)}}
-$('save').onclick=async()=>{if(!calc()||!$('client').value)return err('Vul eerst een klant en geldige tijden in');let {error}=await db.from('time_entries').insert({organization_id:org.id,client_id:$('client').value,user_id:user.id,work_date:$('date').value,start_time:$('start').value,end_time:$('end').value,person_count:Number($('persons').value),break_minutes:Number($('pause').value),notes:$('notes').value});if(error)return err(error);msg('Uren opgeslagen');$('notes').value='';await loadEntries()};
+$('save').onclick=async()=>{
+ if(saveLocked)return;
+ if(!calc()||!$('client').value)return err('Vul eerst een klant en geldige tijden in');
+ saveLocked=true;
+ const button=$('save'),status=$('saveStatus');
+ button.disabled=true;button.textContent='Opslaan…';status.textContent='Uren worden opgeslagen…';status.className='muted';
+ let succeeded=false;
+ try{
+  const {error}=await db.from('time_entries').insert({
+   organization_id:org.id,client_id:$('client').value,user_id:user.id,
+   work_date:$('date').value,start_time:$('start').value,end_time:$('end').value,
+   person_count:Number($('persons').value),break_minutes:Number($('pause').value),
+   notes:$('notes').value
+  });
+  if(error){err(error);status.textContent='Opslaan mislukt. Probeer het opnieuw.';status.className='err';return;}
+  succeeded=true;
+  status.textContent='✓ Uren succesvol opgeslagen!';status.className='ok';
+  msg('Uren opgeslagen');$('notes').value='';
+  await loadEntries();
+ }catch(error){
+  if(!succeeded){err(error);status.textContent='Opslaan mislukt. Probeer het opnieuw.';status.className='err';}
+  else err(error);
+ }finally{
+  if(succeeded){
+   button.textContent='Opgeslagen ✓';
+   setTimeout(()=>{saveLocked=false;button.textContent='Opslaan';calc();},3000);
+  }else{
+   saveLocked=false;button.textContent='Opslaan';calc();
+  }
+ }
+};
 
 $('month').onchange=updateStats;
 function selectedEntries(){return entryCache.filter(x=>x.work_date.slice(0,7)===$('month').value)}
