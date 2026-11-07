@@ -7,7 +7,7 @@
 - Supabase-project `tgpvissgdojcqgagyfpw` is actief, Postgres 17; RLS staat aan op de vijf tabellen in `public`.
 - De app haalt `organizations` op via een SELECT met `limit(1)` in `refresh()` en heeft die organisatie nodig voor medewerkerfuncties.
 - De aanwezige policy `org_owner_read` laat alleen records lezen met `owner_id = auth.uid()`.
-- **Waarschijnlijke functionele blokkade:** een uitgenodigde medewerker die geen eigenaar is kan na aanmelden zijn organisatie niet via deze SELECT ophalen. Dit is op basis van code en policies vastgesteld; het is nog niet met twee echte gebruikers geverifieerd.
+- **Bestaande fallback:** bij een lege organisaties-SELECT haalt `refresh()` het eigen `organization_members`-record op en gebruikt `organization_id` met de tijdelijke naam `Team`. Hierdoor zijn medewerkers niet noodzakelijk geblokkeerd, maar zien zij mogelijk de echte organisatienaam niet. Of alle functies correct werken is nog niet getest met twee echte accounts.
 - Er staan momenteel nul regels in `public.organization_members`. Een werkelijke werkgever/medewerker-beveiligingstest is dus nog niet uitgevoerd.
 - `get_pending_time_reviews` retourneert maximaal 500 ingediende uren; de UI moet paginering of een bewust begrensde weergave aanbieden voordat grote teams worden ondersteund.
 - Vier public RPC's zijn bewust `SECURITY DEFINER` met lege `search_path` en zichtbare controle op `auth.uid()` en eigenaar/admin. Supabase signaleert deze alsnog terecht ter handmatige review. Vermijd het uitschakelen van die waarschuwingen zonder onderzoek.
@@ -31,7 +31,7 @@ Maak een minimaal geprivilegieerde manier om een ingelogde medewerker alleen de 
 9. Vergelijk persoonlijke CSV en maandtotalen met ruwe databaseaantallen voor 0, 1, 500, 501 en 1001 regels.
 10. Test mobiel, toetsenbordnavigatie, wachtwoordherstel, uitnodigingsmail, sessieverval en uitloggen. Sla geen echte klantdata op voordat dit is geslaagd.
 
-**Acceptatie:** alleen na gedocumenteerde succesvolle tests, beoordeling van de vier SECURITY DEFINER-RPC's, herstel van medewerkerszichtbaarheid en bevestiging van noodzakelijke privacy-/dienstvoorwaarden. Tot die tijd blijft de gebruikersapp test-only.
+**Acceptatie:** alleen na gedocumenteerde succesvolle tests, beoordeling van de vier SECURITY DEFINER-RPC's, geverifieerde medewerkerszichtbaarheid en een correcte organisatienaam en bevestiging van noodzakelijke privacy-/dienstvoorwaarden. Tot die tijd blijft de gebruikersapp test-only.
 
 ## Scope en kosten
 
