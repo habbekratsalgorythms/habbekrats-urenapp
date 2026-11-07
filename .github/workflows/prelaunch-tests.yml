@@ -1,0 +1,29 @@
+name: Five-track prelaunch quality checks
+on:
+  push:
+    branches:
+      - codex/five-tracks-2026-11-07
+  pull_request:
+    paths:
+      - '**/*.html'
+      - 'tests/**'
+      - '.github/workflows/prelaunch-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify business interaction regression tests
+        run: node tests/verify.cjs
+      - name: Check internal pages, links, assets and mobile headers
+        run: node tests/check-links.cjs
+      - name: Check no accidental production credentials
+        run: |
+          ! git grep -nE '(service_role|sb_secret_|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- ':!tests/**'
