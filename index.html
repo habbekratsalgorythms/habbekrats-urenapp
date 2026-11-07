@@ -33,7 +33,7 @@ $('signup').onclick=async()=>{
  if(!email||!password){authNotice('Vul eerst je e-mailadres en wachtwoord in.');return;}
  $('signup').disabled=true;
  try{
-  const {data,error}=await db.auth.signUp({email,password});
+  const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:'https://habbekratsalgorythms.github.io/habbekrats-urenapp/'}});
   authNotice(error?humanAuthError(error):data.session?'Account aangemaakt: je bent ingelogd.':'Aanvraag ontvangen. Controleer je e-mail voor de verificatielink. De app is nog in testfase.');
   if(!error&&data.session)await refresh();
  }finally{$('signup').disabled=false;}
