@@ -37,10 +37,13 @@ Bijgewerkt: 7 november 2026. Dit overzicht meldt uitgevoerd werk, geen bewezen o
 ## Validatie
 Run `node tests/verify.cjs` met Node.js. Geen externe packages vereist.
 Controleert script-syntax, calculatorreferentie, ongeldige invoer, briefing/mailto, affiliatecheck en een urenlijst van 1001 regels over drie pagina's.
-Getest met tijdelijke programmastukken in deze sessie; volledige broncontrole volgt na opslag.
-Geen browser-, authenticatie- of productie-eindtest geclaimd.
+Geslaagd op de volledige bronbestanden, onafhankelijk gedownload op commit 2e50f5f4859b5d00a6621fde7c2398dc2960b606. Acht interne links gecontroleerd; zeven pagina's bevatten taal- en mobiele viewportmetadata. Anonieme SELECT op organizations wordt geweigerd door tabelrechten; deze weigering is de verwachte uitkomst, geen reden om rechten te verruimen.
+Aanvullend: authenticated-rol zonder gebruikersidentiteit ziet nul rijen in alle vijf openbare tabellen. Dit vervangt geen test met twee echte gebruikers/bedrijven. Geen browser- of volledige productie-eindtest geclaimd.
 
 ## Kosten en publicatie
 €0 aankopen/abonnementen/budgetwijzigingen via deze sessie. Bestaande kosten niet onderzocht.
 Wijzigingen uitsluitend op codex/five-tracks-2026-11-07, niet op main.
 Geen productiegegevens veranderd. Merge naar main kan GitHub Pages publiceren; eerst browser- en accountcontroles afronden.
+
+## Ontbrekende zakelijke inrichting — bevestigd door eigenaar
+Er is nog geen KvK-nummer en er zijn nog geen betaalopties aangemaakt. Daarom uitsluitend vrijblijvende pilot-/offerteaanvragen. Geen fictieve KvK-, btw- of betaalgegevens invullen. Zakelijke registratie en betaalproviderverificatie vereisen feitelijke eigenaargegevens en diens identiteits-/bankverificatie; kosten alleen na expliciet akkoord. Geen betaling of aankoop in deze sessie gestart.
