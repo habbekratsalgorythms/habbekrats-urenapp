@@ -24,6 +24,23 @@ jobs:
         run: node tests/verify.cjs
       - name: Check internal pages, links, assets and mobile headers
         run: node tests/check-links.cjs
+      - name: Package only review-only static product pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: Habbekrats-five-track-review-pages
+          path: |
+            studio/
+            offertecalculator/
+            microservices/
+            affiliate/
+            klyptiq/
+            uren/
+            assets/
+            PROJECT_STATUS.md
+            RELEASE_CHECKLIST.md
+            docs/
+          if-no-files-found: error
+          retention-days: 14
       - name: Check no accidental production credentials
         run: |
           ! git grep -nE '(service_role|sb_secret_|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- '*.html'
