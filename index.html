@@ -3,6 +3,14 @@
 </style></head><body><header><h1>HabbekratsAlgorythms</h1><p>Urenregistratie · vroege testversie</p></header><main>
 <section class="panel" id="auth"><h2>Inloggen</h2><div class="grid"><div><label>E-mailadres</label><input id="email" type="email" autocomplete="email"></div><div><label>Wachtwoord</label><input id="password" type="password" autocomplete="current-password"></div></div><div class="actions"><button id="login">Inloggen</button><button class="secondary" id="signup">Account maken</button></div><p id="authMsg" role="status" aria-live="polite"></p><small>Alleen testaccounts. Bevestigingsmails naar externe adressen vereisen aangepaste SMTP-instellingen.</small></section>
 <div id="app"><section class="panel"><div class="actions" style="justify-content:space-between"><strong id="who"></strong><button class="secondary" id="logout">Uitloggen</button></div><p class="muted" id="orgMsg">Je organisatie wordt geladen…</p><div id="neworg" style="display:none"><label>Bedrijfsnaam</label><input id="orgName" value="Mijn bedrijf"><div class="actions"><button id="makeOrg">Bedrijf aanmaken</button></div></div></section>
+<section class="panel" id="adminMailPanel" style="display:none">
+<h2>Beheerder & meldingen</h2>
+<p class="muted">Stel hier het e-mailadres in van de beheerder van jouw bedrijf. Ingediende uren verschijnen altijd in het eigen beheerdersoverzicht van dit bedrijf. Automatische e-mailmeldingen zijn nog niet ingeschakeld.</p>
+<label for="adminMail">E-mailadres beheerder</label>
+<input id="adminMail" type="email" autocomplete="email" placeholder="beheerder@jouwbedrijf.nl">
+<div class="actions"><button id="saveAdminMail" type="button">E-mailadres opslaan</button></div>
+<p id="adminMailStatus" role="status" aria-live="polite"></p>
+</section>
 <section class="panel" id="invitePanel" style="display:none"><h2>Medewerkers uitnodigen</h2><p class="muted">Maak een persoonlijke uitnodigingscode. Deze kan één keer worden gebruikt en verloopt na 7 dagen. Deel de link uitsluitend met je medewerker.</p><div class="actions"><button id="createInvite" type="button">Nieuwe uitnodigingslink</button></div><div id="generatedInvite" style="display:none"><label for="inviteLink">Uitnodigingslink</label><input id="inviteLink" readonly><div class="actions"><button id="copyInvite" class="secondary" type="button">Link kopiëren</button></div></div></section>
 <section class="panel" id="joinPanel" style="display:none"><h2>Uitnodiging accepteren</h2><p class="muted">Heb je van je werkgever een uitnodigingscode gekregen? Log in en plak de code hier.</p><label for="joinCode">Uitnodigingscode</label><input id="joinCode" type="text" maxlength="48" autocomplete="off" placeholder="48 tekens"><div class="actions"><button id="acceptInvite" type="button">Deelnemen aan bedrijf</button></div></section>
 <section class="panel" id="clientPanel" style="display:none"><h2>Klanten</h2><div class="grid"><input id="clientName" placeholder="Naam nieuwe klant"><button id="addClient">Klant toevoegen</button></div></section>
@@ -17,7 +25,7 @@ const msg=s=>{ $('message').textContent=s; $('message').className='ok'; };
 const isoWeek=s=>{let d=new Date(s+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+4-(d.getUTCDay()||7));return Math.ceil(((d-new Date(Date.UTC(d.getUTCFullYear(),0,1)))/86400000+1)/7)};
 function calc(){let a=$('start').value.split(':').map(Number),b=$('end').value.split(':').map(Number),p=Number($('pause').value),n=Number($('persons').value),mins=(b[0]*60+b[1]-a[0]*60-a[1]+1440)%1440;let ok=mins>0&&p>=0&&p<mins&&Number.isInteger(n)&&n>0&&n<=100;let total=ok?(mins-p)*n/60:0;$('computed').textContent=ok?total.toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2})+' manuren':'Controleer tijden, pauze en personen';$('save').disabled=!ok||saveLocked;return ok;}
 ['start','end','pause','persons'].forEach(x=>$(x).addEventListener('input',calc));$('date').addEventListener('change',()=>{$('week').value=isoWeek($('date').value)});$('week').value=isoWeek($('date').value);calc();
-async function refresh(){const {data:{user:u}}=await db.auth.getUser();user=u;$('auth').style.display=u?'none':'block';$('app').style.display=u?'block':'none';if(!u)return;$('who').textContent=u.email;const {data,error}=await db.from('organizations').select('id,name,owner_id').limit(1);if(error)return err(error);org=data?.[0]||null;isOwner=org?.owner_id===user.id;if(org&&!isOwner){const role=await db.from('organization_members').select('role').eq('organization_id',org.id).eq('user_id',user.id).maybeSingle();if(role.error)return err(role.error);isOwner=role.data?.role==='admin';}if(!org){const mem=await db.from('organization_members').select('organization_id,role').eq('user_id',user.id).limit(1);if(mem.error)return err(mem.error);if(mem.data?.[0]){org={id:mem.data[0].organization_id,name:'Team'};isOwner=mem.data[0].role==='admin';}}$('orgMsg').textContent=org?'Bedrijf: '+org.name:'Maak eerst een bedrijf aan';$('neworg').style.display=org?'none':'block';$('clientPanel').style.display=isOwner?'block':'none';['entryPanel','listPanel','statsPanel'].forEach(x=>$(x).style.display=org?'block':'none');$('reviewPanel').style.display=isOwner?'block':'none';$('invitePanel').style.display=org&&org.owner_id===user.id?'block':'none';$('joinPanel').style.display=org?'none':'block';if(org){await loadClients();await loadEntries();await loadReviews();}}
+async function refresh(){const {data:{user:u}}=await db.auth.getUser();user=u;$('auth').style.display=u?'none':'block';$('app').style.display=u?'block':'none';if(!u)return;$('who').textContent=u.email;const {data,error}=await db.from('organizations').select('id,name,owner_id,notification_email').limit(1);if(error)return err(error);org=data?.[0]||null;isOwner=org?.owner_id===user.id;if(org&&!isOwner){const role=await db.from('organization_members').select('role').eq('organization_id',org.id).eq('user_id',user.id).maybeSingle();if(role.error)return err(role.error);isOwner=role.data?.role==='admin';}if(!org){const mem=await db.from('organization_members').select('organization_id,role').eq('user_id',user.id).limit(1);if(mem.error)return err(mem.error);if(mem.data?.[0]){org={id:mem.data[0].organization_id,name:'Team'};isOwner=mem.data[0].role==='admin';}}$('orgMsg').textContent=org?'Bedrijf: '+org.name:'Maak eerst een bedrijf aan';$('neworg').style.display=org?'none':'block';$('clientPanel').style.display=isOwner?'block':'none';['entryPanel','listPanel','statsPanel'].forEach(x=>$(x).style.display=org?'block':'none');$('reviewPanel').style.display=isOwner?'block':'none';$('adminMailPanel').style.display=org&&org.owner_id===user.id?'block':'none';if(org&&org.owner_id===user.id){$('adminMail').value=org.notification_email||'';}$('invitePanel').style.display=org&&org.owner_id===user.id?'block':'none';$('joinPanel').style.display=org?'none':'block';if(org){await loadClients();await loadEntries();await loadReviews();}}
 $('login').onclick=async()=>{let {error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});error?authNotice(humanAuthError(error)):refresh()};
 const authNotice=message=>{const el=$('authMsg');el.textContent=message;el.setAttribute('role','status');};
 function humanAuthError(error){
@@ -69,6 +77,21 @@ $('acceptInvite').onclick=async()=>{
 const linkCode=new URL(location.href).searchParams.get('invite');
 if(linkCode&&/^[a-f0-9]{48}$/.test(linkCode)){$('joinCode').value=linkCode;}
 
+$('saveAdminMail').onclick=async()=>{
+ if(!user||!org||org.owner_id!==user.id)return err('Alleen de eigenaar kan dit adres wijzigen.');
+ const email=$('adminMail').value.trim().toLowerCase();
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))return err('Voer een geldig e-mailadres in.');
+ $('saveAdminMail').disabled=true;
+ try{
+  const {data,error}=await db.from('organizations')
+   .update({notification_email:email}).eq('id',org.id).eq('owner_id',user.id)
+   .select('notification_email').single();
+  if(error)return err(error);
+  org.notification_email=data.notification_email;
+  $('adminMailStatus').textContent='✓ Beheerderadres opgeslagen voor '+org.name+'.';
+  $('adminMailStatus').className='ok';
+ }finally{$('saveAdminMail').disabled=false;}
+};
 $('makeOrg').onclick=async()=>{if(!user)return;let {error}=await db.from('organizations').insert({name:$('orgName').value,owner_id:user.id});error?err(error):refresh()};
 async function loadClients(){const {data,error}=await db.from('clients').select('id,name').eq('organization_id',org.id).order('name');if(error)return err(error);$('client').replaceChildren();(data||[]).forEach(c=>{$('client').add(new Option(c.name,c.id))})}
 $('addClient').onclick=async()=>{let name=$('clientName').value.trim();if(!name)return;let {error}=await db.from('clients').insert({organization_id:org.id,name});error?err(error):($('clientName').value='',loadClients())};
