@@ -64,3 +64,16 @@ Er is nog geen KvK-nummer en er zijn nog geen betaalopties aangemaakt. Daarom ui
 
 **Eigenaar:** voorlopig geen actie nodig voor documentatie en offline code. Vóór betaalde lancering: zakelijke identiteit, voorwaarden, betaalmogelijkheid en expliciete vrijgave; voor urenapp echte testaccounts en verificatie van rollen.
 **Jesse:** kanaalprofielen/branding afmaken en bij toekomstige echte posts beeld, geluid en status steekproefsgewijs controleren; geen financiële of codehandelingen vereist.
+
+### Aanvullende browsercontrole (8 november)
+
+De eerder ontbrekende **echte browsercontrole is alsnog uitgevoerd op GitHub Actions** met headless Chromium en Playwright, nadat de lokale browser door beleid werd geblokkeerd. [Run #42427435000](https://github.com/habbekratsalgorythms/habbekrats-urenapp/actions/runs/42427435000) = SUCCESS.
+
+- Desktop 1366×900 en mobiel 390×844: acht website-/productpagina's geopend; geen JavaScript-paginafouten of horizontale overflow gevonden.
+- Calculator: voorbeeldbedragen, huidig tarief, actuele marge, CSV-download met UTF-8 BOM en geblokkeerde export bij ongeldige uren getest.
+- AI-microservice: briefing aangemaakt en mailto-aanvraag gecontroleerd zonder e-mail te verzenden.
+- Affiliate: keuzecheck met gratis budgetoptie gecontroleerd.
+- Screenshots en test-CSV's opgeslagen als GitHub-artifact `Habbekrats-browser-review-screens`, veertien dagen beschikbaar.
+- Afzonderlijk artifact `Habbekrats-five-track-review-pages` bevat de review-only pagina's, niet de live app.
+
+**Nog niet bewezen:** daadwerkelijke print/PDF-opmaak, productie Supabase-auth met echte medewerkers/tenants, e-mailverificatie, betaalacceptatie, uitgevoerde leveringen en commerciële klanten. PR #1 blijft bewust draft.
