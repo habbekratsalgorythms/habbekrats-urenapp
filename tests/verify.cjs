@@ -9,17 +9,25 @@ for(const [path,html] of Object.entries(pages)){
   new vm.Script(script,{filename:path});checks.push(path+' syntax OK');
  }
 }
-function dom(){const elements={};return {elements,getElementById(id){return elements[id]||=( {value:'',textContent:'',disabled:false,hidden:true,children:[],addEventListener(type,fn){this[type]=fn},checkValidity(){return true},replaceChildren(){this.children=[]},append(...c){this.children.push(...c)}})},createElement(){return {textContent:'',children:[],append(...c){this.children.push(...c)}}}}}
+function dom(){const elements={};return {elements,getElementById(id){return elements[id]||=( {value:'',textContent:'',disabled:false,hidden:true,children:[],addEventListener(type,fn){this[type]=fn},checkValidity(){return true},replaceChildren(){this.children=[]},append(...c){this.children.push(...c)}})},body:{appendChild(){}},createElement(){return {textContent:'',children:[],append(...c){this.children.push(...c)},click(){},remove(){}}}}}
 const script=pages['offertecalculator/index.html'].match(/<script>([\s\S]*?)<\/script>/)[1];
 const d=dom();const vals={hours:'2',visits:'1',labor:'24',travel:'1.95',material:'2',margin:'25',vat:'21'};
 for(const [id,v] of Object.entries(vals))d.getElementById(id).value=v;
-const c=vm.createContext({document:d});vm.runInContext(script,c);
+let exportedBlob;const c=vm.createContext({document:d,URL:{createObjectURL(b){exportedBlob=b;return 'blob:offline-test'},revokeObjectURL(){}},Blob:class{constructor(parts){this.parts=parts}}});vm.runInContext(script,c);
 assert(d.getElementById('price').textContent.includes('69,27'));
 assert(d.getElementById('incl').textContent.includes('83,81'));
+assert(d.getElementById('scenario15').textContent.includes('61,12'));
+assert(d.getElementById('scenario35').textContent.includes('79,92'));
+assert(d.getElementById('yearProfit').textContent.includes('900,47'));
+d.getElementById('currentPrice').value='75';vm.runInContext('recalc()',c);
+assert(d.getElementById('actualMargin').textContent.includes('30,73%'));
+vm.runInContext('exportQuoteCsv()',c);assert(exportedBlob.parts[0].includes('annualProfit'));assert(exportedBlob.parts[0].startsWith('\uFEFF'));
+d.getElementById('currentPrice').value='-1';vm.runInContext('recalc()',c);assert(d.getElementById('exportQuote').disabled);
+d.getElementById('currentPrice').value='';vm.runInContext('recalc()',c);
 d.getElementById('labor').value='';vm.runInContext('recalc()',c);assert(d.getElementById('printQuote').disabled);
 d.getElementById('labor').value='24';d.getElementById('margin').value='100';vm.runInContext('recalc()',c);assert(d.getElementById('printQuote').disabled);
 d.getElementById('margin').value='25';d.getElementById('hours').value='0';vm.runInContext('recalc()',c);assert(d.getElementById('printQuote').disabled);
-checks.push('Calculator: reference amounts, blank, 100% margin, zero hours OK');
+checks.push('Calculator: reference amounts, 3 scenarios, current margin, annual profit, offline CSV, invalid input OK');
 for(const path of ['microservices/index.html','affiliate/index.html']){
  const d=dom();const ctx=vm.createContext({document:d,encodeURIComponent});
  vm.runInContext(pages[path].match(/<script>([\s\S]*?)<\/script>/)[1],ctx);
