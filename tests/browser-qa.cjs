@@ -66,7 +66,7 @@ async function run(){
   assert((await page.locator('#result').innerText()).includes('2 gebundelde rondes'),'Approved review policy in draft');
   assert((await page.locator('#mail').getAttribute('href')).startsWith('mailto:'));
   await page.goto(origin+'microservices/werkwijze.html');
-  assert((await page.locator('main').innerText()).includes('€79'),'Service terms linked');
+  assert((await page.locator('header').innerText()).includes('€79'),'Service terms show fixed price');
   await page.goto(origin+'offertecalculator/index.html');
   assert((await page.locator('#advieskop').innerText()).includes('€19,95'),'Approved Pro price shown');
   await page.goto(origin+'affiliate/index.html');
