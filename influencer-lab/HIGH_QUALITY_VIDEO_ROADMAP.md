@@ -45,6 +45,30 @@ py influencer-lab\prepare_video_jobs.py --vexa C:\Art\vexa.png --pip C:\Art\pip-
 6. Reject generations with identity drift, melting hands, blinking eyes in strange places, inconsistent hair, robot merging with Pip, inaccurate lips or noticeable flicker. Do not assume the first sample is good.
 7. If this works, feed each approved local MP4 into a separate FFmpeg assembly with original caption animation, polished voice, original sound and clear 9:16 framing. No third-party protected footage, unauthorized voice impersonation or hidden brand sponsorship.
 
+## Dedicated render access — safe one-time connection, NOT broad PC control
+
+The user has authorized developing an autonomous local rendering path using the RTX 3070, but this ordinary ChatGPT chat **does not have access to Windows or a remote command terminal**. Access can only start after the user installs and explicitly authorizes a purpose-specific local bridge. Do not claim the bridge is active when it is not.
+
+**Preferred design:** a restricted, outbound-only *Klyptiq local render worker*, running as a standard Windows user, reading approved render-job manifests from a dedicated controlled project and invoking `127.0.0.1:8188` (ComfyUI local API) with a **locally pinned, reviewed workflow**. It may only select Vexa/Pip/Blop, known local images, fixed model and bounded safe settings. It must NEVER run shell commands, install packages, change system settings, read personal folders, browse localhost services outside ComfyUI, or accept arbitrary Python/PowerShell snippets from a remote job. Set explicit job quota and STOP control.
+
+The **first installation** is intentionally not a broad remote desktop tool. Use no firewall port forwarding, no open ComfyUI HTTP access on `0.0.0.0`, no cloud tunnels, no password/API-token copying into ChatGPT and no full-permission Windows GitHub self-hosted Actions runner. GitHub warns strongly against self-hosted runners on public repositories because workflows can execute arbitrary untrusted code. A private, dedicated scoped broker plus whitelisted render commands is safer.
+
+**Video handoff** needs a separate supported location (e.g. a properly connected private storage integration, or user manual first-preview upload). Do not commit 4GB source model files, copyrighted trailers, credentials or unreleased personal material to a public repository. Do not claim we can upload results from the user's Windows PC until this link is tested.
+
+**One-time human actions required:**
+1. On Windows **host**, launch PowerShell and paste `nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader`; share only GPU model, VRAM and driver number.
+2. Install official ComfyUI Desktop from <https://www.comfy.org/download>, not an unknown packaged installer. Use a folder with sufficient free space and no automatic paid cloud services.
+3. Open ComfyUI once to validate it starts and sees the NVIDIA CUDA card. Do NOT download a large model before the GPU/storage diagnosis.
+4. Once the official local UI is working, this project can supply a restricted render-only worker and a vetted Wan 5B workflow. User performs only the one-time local authorization; subsequent scene jobs can be prepared in the connected GitHub project and executed locally without giving the agent unrestricted Windows access.
+
+**Jesse:** continue activating 2FA and securing recovery codes for social accounts. No role in video-GPU installation unless explicitly delegated by user.
+
+## Real talking mouths: independent of motion generation
+
+Wan2.2 TI2V 5B produces **video movement but does NOT automatically sync lip movements to a supplied Kokoro narration track**. Treat visible speech as a separate stage, not an assumed feature. **MuseTalk 1.5** publishes lip-sync code/model usage permissions for commercial purposes (check every dependency/model license); it is a plausible follow-up test, not yet proven on RTX3070 and may struggle with the cartoon alien face. Alternatively **LatentSync 1.5** lists 8GB minimum inference VRAM; version 1.6 requires about 18GB. Wan2.2-S2V audio-driven video uses 14B and is not our 8GB first choice. Run stages sequentially (do NOT load Wan and lip-sync models together). Keep original synthetic voice and output QA.
+
+Official sources: <https://github.com/TMElyralab/MuseTalk>, <https://github.com/bytedance/LatentSync>, <https://docs.comfy.org/tutorials/video/wan/wan2-2-s2v>, <https://docs.github.com/en/actions/reference/security/secure-use>, <https://docs.comfy.org/development/comfyui-server/comms_routes>.
+
 ## Optional Grok fallback (NOT ENABLED)
 
 xAI API price list verified Nov 8 2026; **USD, excluding taxes, input fees and unsuccessful attempts**. Prices can change; verify again before making requests.
