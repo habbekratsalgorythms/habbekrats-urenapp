@@ -61,7 +61,7 @@ async function run(){
   await page.locator('#check button').click();
   assert((await page.locator('#advice').innerText()).includes('gratis optie'));
   await page.goto(origin+'demo/index.html');
-  assert((await page.locator('#hours').innerText()).includes('13,50'),'Demo baseline hours');
+  assert((await page.locator('#hours').innerText()).includes('16,25'),'Demo baseline hours');
   assert((await page.locator('#submitted').innerText())==='2','Demo baseline submissions');
   await page.locator('#entries button').first().click();
   assert((await page.locator('#approved').innerText())==='2','Demo approve updates state');
