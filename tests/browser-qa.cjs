@@ -73,6 +73,18 @@ async function run(){
   await demoFile.saveAs(path.join(shots,'demo-'+size+'.csv'));
   const demoCsv=fs.readFileSync(path.join(shots,'demo-'+size+'.csv'),'utf8');
   assert(demoCsv.includes('Noor')&&!demoCsv.includes('Sam'),'Filtered demo CSV contains only employee B');
+  // Remaining fictional employee-B submission can be rejected, then becomes immutable.
+  await page.locator('#entries button').filter({hasText:'Afwijzen'}).click();
+  assert((await page.locator('#entries').innerText()).includes('Afgewezen'),'Demo rejection changes entry status');
+  assert((await page.locator('#entries button').count())===0,'Approved/rejected entries must not offer approval actions');
+  await page.locator('#status').selectOption('rejected');
+  assert((await page.locator('#entries article').count())===1,'Rejected filter shows only employee-B rejection');
+  const rejectedDownload=page.waitForEvent('download');
+  await page.locator('#export').click();
+  const rejectedFile=await rejectedDownload;
+  await rejectedFile.saveAs(path.join(shots,'rejected-'+size+'.csv'));
+  const rejectedCsv=fs.readFileSync(path.join(shots,'rejected-'+size+'.csv'),'utf8');
+  assert(rejectedCsv.includes('Noor')&&rejectedCsv.includes('Afgewezen')&&!rejectedCsv.includes('Sam'),'Rejected CSV includes only correct employee and status');
   await page.locator('#reset').click();
   assert((await page.locator('#submitted').innerText())==='2','Demo reset restores initial statuses');
   await context.close();
