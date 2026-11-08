@@ -141,10 +141,19 @@ def _url(port, endpoint):
         raise ValueError("Invalid ComfyUI API path")
     return f"http://127.0.0.1:{port}{endpoint}"
 
-def _send(port, endpoint, body=None, headers=None, timeout=12):
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError("Remote or unexpected HTTP redirect refused")
+
+def _send(port, endpoint, body=None, headers=None, timeout=12, max_bytes=8*1024*1024):
     req = urllib.request.Request(_url(port,endpoint), data=body, headers=headers or {})
-    with urllib.request.urlopen(req,timeout=timeout) as res:
-        data = res.read(15 * 1024 * 1024)
+    # Ignore environment/system HTTP proxies even when requesting 127.0.0.1.
+    # A local malicious/misconfigured server cannot redirect us to the internet.
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), _NoRedirect())
+    with opener.open(req, timeout=timeout) as res:
+        data = res.read(max_bytes+1)
+        if len(data)>max_bytes:
+            raise ValueError("ComfyUI response exceeded local safety limit")
     return data
 
 def _upload_png(port, image_bytes, persona):
@@ -207,9 +216,14 @@ def _wait_and_fetch(port, prompt_id, output_dir, persona, deadline_s=7200):
     if not isinstance(sub,str) or (sub and not re.fullmatch(r"[A-Za-z0-9_-]{1,50}",sub)):
         raise ValueError("Unsafe output subfolder")
     params=urllib.parse.urlencode({"filename":fname,"subfolder":sub,"type":"output"})
-    data=_send(port,"/view?"+params,timeout=120)
+    data=_send(port,"/view?"+params,timeout=120,max_bytes=VIDEO_MAX_BYTES)
     if not 1000<len(data)<=VIDEO_MAX_BYTES:
         raise ValueError("Output video size out of range")
+    ext=Path(fname).suffix.lower()
+    if ext==".mp4" and data[4:8]!=b"ftyp":
+        raise ValueError("ComfyUI returned no valid MP4 file header")
+    if ext==".webm" and data[:4]!=b"\x1a\x45\xdf\xa3":
+        raise ValueError("ComfyUI returned no valid WebM file header")
     dest=output_dir / ("REVIEW-"+persona+Path(fname).suffix.lower())
     if dest.exists():
         raise FileExistsError("Refusing to overwrite existing preview: "+str(dest))
