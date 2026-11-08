@@ -33,6 +33,42 @@ d.getElementById('labor').value='';vm.runInContext('recalc()',c);assert(d.getEle
 d.getElementById('labor').value='24';d.getElementById('margin').value='100';vm.runInContext('recalc()',c);assert(d.getElementById('printQuote').disabled);
 d.getElementById('margin').value='25';d.getElementById('hours').value='0';vm.runInContext('recalc()',c);assert(d.getElementById('printQuote').disabled);
 checks.push('Calculator: reference amounts, 3 scenarios, current margin, annual profit, offline CSV, invalid input OK');
+// Regression: selecting another customer must change visible records, monthly totals and CSV.
+{
+ const app=pages['index.html'];
+ const statsCode=app.slice(app.indexOf('function selectedEntries(){'),app.indexOf("$('exportCsv').onclick"));
+ const listCode=app.slice(app.indexOf('function renderEntries(){'),app.indexOf("$('save').onclick=async()=>{"));
+ const csvCode=app.slice(app.indexOf("$('exportCsv').onclick"),app.indexOf("async function loadReviews(){"));
+ assert(statsCode.includes("x.client_id===client"),"Per-client totals must explicitly filter client_id");
+ assert(listCode.includes("entry.client_id===chosenClient"),"Per-client records must filter client_id");
+ let csvBlob;const nodes={};
+ const element=()=>({value:'',textContent:'',children:[],selectedOptions:[],append(...children){this.children.push(...children)},replaceChildren(){this.children=[]},querySelector(){return {textContent:'Client '+nodes.client.value}},click(){},remove(){}});
+ for(const id of ['client','month','monthTotal','entries'])nodes[id]=element();
+ nodes.client.value='a';nodes.client.selectedOptions=[{textContent:'Alpha'}];nodes.month.value='2026-11';
+ const records=[
+  {id:'row-a',client_id:'a',work_date:'2026-11-05',start_time:'09:00',end_time:'10:00',person_count:1,total_person_minutes:60,status:'approved'},
+  {id:'row-b',client_id:'b',work_date:'2026-11-06',start_time:'13:00',end_time:'15:00',person_count:1,total_person_minutes:120,status:'approved'}
+ ];
+ const testDoc={createElement:()=>element(),body:{appendChild(){}}};
+ const sandbox=vm.createContext({entryCache:records,$:id=>nodes[id],document:testDoc,
+  statusLabels:{approved:'Goedgekeurd'},URL:{createObjectURL(b){csvBlob=b;return 'blob:test'},revokeObjectURL(){}},
+  Blob:class{constructor(parts){this.parts=parts}}});
+ vm.runInContext(statsCode+'\n'+listCode+'\n'+csvCode,sandbox);
+ vm.runInContext('updateStats();renderEntries();',sandbox);
+ assert.equal(nodes.entries.children.length,1);
+ assert(nodes.entries.children[0].children[0].textContent.includes('Client a'));
+ assert(nodes.monthTotal.textContent.startsWith('1'));
+ vm.runInContext("$('exportCsv').onclick()",sandbox);
+ assert(csvBlob.parts[0].includes('Alpha')&&!csvBlob.parts[0].includes('Beta'));
+ nodes.client.value='b';nodes.client.selectedOptions=[{textContent:'Beta'}];
+ vm.runInContext('updateStats();renderEntries();',sandbox);
+ assert.equal(nodes.entries.children.length,1);
+ assert(nodes.entries.children[0].children[0].textContent.includes('Client b'));
+ assert(nodes.monthTotal.textContent.startsWith('2'));
+ vm.runInContext("$('exportCsv').onclick()",sandbox);
+ assert(csvBlob.parts[0].includes('Beta')&&!csvBlob.parts[0].includes('Alpha'));
+ checks.push('Hours: per-customer tabs isolate records, monthly totals and CSV exports');
+}
 for(const path of ['microservices/index.html','affiliate/index.html']){
  const d=dom();const ctx=vm.createContext({document:d,encodeURIComponent});
  vm.runInContext(pages[path].match(/<script>([\s\S]*?)<\/script>/)[1],ctx);
