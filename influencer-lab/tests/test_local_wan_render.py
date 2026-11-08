@@ -127,6 +127,38 @@ class WanLocalTests(unittest.TestCase):
                      "--renders",str(root/"renders"),"--execute"]):
                     with self.assertRaises(ValueError):wan.main()
 
+    def test_complete_video_saved_from_local_history(self):
+        with tempfile.TemporaryDirectory() as td:
+            out=Path(td)
+            def fake_send(port, endpoint, *args, **kwargs):
+                if endpoint.startswith("/history/"):
+                    return json.dumps({"abc":{"status":{"status_str":"success"},"outputs":{
+                        "58":{"gifs":[{"filename":"REVIEW-vexa-volt_00001.mp4",
+                          "subfolder":"Klyptiq","type":"output"}]}}}}).encode("utf-8")
+                if endpoint.startswith("/view?"):
+                    self.assertEqual(kwargs["max_bytes"],wan.VIDEO_MAX_BYTES)
+                    return b"\x00\x00\x00\x20ftyp" + b"0"*1500
+                raise AssertionError("Unexpected local endpoint "+endpoint)
+            with patch.object(wan,"_send",side_effect=fake_send):
+                result=wan._wait_and_fetch(8000,"abc",out,"vexa-volt")
+            self.assertEqual(result.name,"REVIEW-vexa-volt.mp4")
+            self.assertTrue(result.is_file())
+
+    def test_reject_web_html_dressed_as_video(self):
+        with tempfile.TemporaryDirectory() as td:
+            def fake_send(port, endpoint, *args, **kwargs):
+                if endpoint.startswith("/history/"):
+                    return json.dumps({"abc":{"status":{"status_str":"success"},"outputs":{
+                        "58":{"gifs":[{"filename":"REVIEW-vexa-volt.mp4",
+                          "subfolder":"Klyptiq","type":"output"}]}}}}).encode("utf-8")
+                if endpoint.startswith("/view?"):
+                    return b"<!doctype html>" + b"0"*1500
+                raise AssertionError("Unexpected endpoint")
+            with patch.object(wan,"_send",side_effect=fake_send):
+                with self.assertRaisesRegex(ValueError,"valid MP4"):
+                    wan._wait_and_fetch(8000,"abc",Path(td),"vexa-volt")
+            self.assertEqual(list(Path(td).iterdir()),[])
+
     def test_upload_only_png_image_and_reject_wrong_echo_filename(self):
         with patch.object(wan,"_send",return_value=b'{"name":"evil.png"}'):
             with self.assertRaisesRegex(ValueError,"exact image upload"):
