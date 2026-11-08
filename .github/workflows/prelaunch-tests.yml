@@ -1,0 +1,66 @@
+name: Five-track prelaunch quality checks
+on:
+  push:
+    branches:
+      - codex/five-tracks-2026-11-07
+  pull_request:
+    paths:
+      - '**/*.html'
+      - 'tests/**'
+      - '.github/workflows/prelaunch-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify business interaction regression tests
+        run: node tests/verify.cjs
+      - name: Check internal pages, links, assets and mobile headers
+        run: node tests/check-links.cjs
+      - name: Package only review-only static product pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: Habbekrats-five-track-review-pages
+          path: |
+            studio/
+            offertecalculator/
+            microservices/
+            affiliate/
+            klyptiq/
+            uren/
+            assets/
+            PROJECT_STATUS.md
+            RELEASE_CHECKLIST.md
+            docs/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Check no accidental production credentials
+        run: |
+          ! git grep -nE '(service_role|sb_secret_|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- '*.html'
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser automation library (no paid API)
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Run real desktop/mobile Chromium checks
+        run: node tests/browser-qa.cjs
+      - name: Preserve screenshots and CSV test exports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Habbekrats-browser-review-screens
+          path: qa-screenshots/
+          if-no-files-found: ignore
+          retention-days: 14
