@@ -43,7 +43,7 @@ checks.push('Calculator: reference amounts, 3 scenarios, current margin, annual 
  assert(listCode.includes("entry.client_id===chosenClient"),"Per-client records must filter client_id");
  let csvBlob;const nodes={};
  const element=()=>({value:'',textContent:'',children:[],selectedOptions:[],append(...children){this.children.push(...children)},replaceChildren(){this.children=[]},querySelector(){return {textContent:'Client '+nodes.client.value}},click(){},remove(){}});
- for(const id of ['client','month','monthTotal','entries'])nodes[id]=element();
+ for(const id of ['client','month','monthTotal','entries','exportCsv'])nodes[id]=element();
  nodes.client.value='a';nodes.client.selectedOptions=[{textContent:'Alpha'}];nodes.month.value='2026-11';
  const records=[
   {id:'row-a',client_id:'a',work_date:'2026-11-05',start_time:'09:00',end_time:'10:00',person_count:1,total_person_minutes:60,status:'approved'},
