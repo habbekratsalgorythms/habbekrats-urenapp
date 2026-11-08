@@ -17,7 +17,7 @@ const server=http.createServer((req,res)=>{
 });
 const pages=['studio/index.html','offertecalculator/index.html','microservices/index.html',
 'microservices/voorbeeldpakket.html','affiliate/index.html','affiliate/redactiebeleid.html',
-'uren/index.html','klyptiq/index.html'];
+'uren/index.html','demo/index.html','klyptiq/index.html'];
 async function run(){
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const origin='http://127.0.0.1:'+server.address().port+'/';
@@ -33,7 +33,7 @@ async function run(){
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+5);
    assert(!overflow,'Horizontal overflow on '+size+' '+pagePath);
    assert(!pageErrors.length,'JavaScript error on '+pagePath+': '+pageErrors.join(' '));
-   if(['offertecalculator/index.html','microservices/index.html','affiliate/index.html'].includes(pagePath)){
+   if(['offertecalculator/index.html','microservices/index.html','affiliate/index.html','demo/index.html'].includes(pagePath)){
     await page.screenshot({path:path.join(shots,pagePath.replaceAll('/','_')+'_'+size+'.png'),fullPage:true});
    }
   }
@@ -60,8 +60,23 @@ async function run(){
   await page.locator('#budget').fill('0');
   await page.locator('#check button').click();
   assert((await page.locator('#advice').innerText()).includes('gratis optie'));
+  await page.goto(origin+'demo/index.html');
+  assert((await page.locator('#hours').innerText()).includes('16,25'),'Demo baseline hours');
+  assert((await page.locator('#submitted').innerText())==='2','Demo baseline submissions');
+  await page.locator('#entries button').first().click();
+  assert((await page.locator('#approved').innerText())==='2','Demo approve updates state');
+  await page.locator('#person').selectOption('b');
+  assert((await page.locator('#hours').innerText()).includes('9,00'),'Demo employee filter is isolated');
+  const demoDownload=page.waitForEvent('download');
+  await page.locator('#export').click();
+  const demoFile=await demoDownload;
+  await demoFile.saveAs(path.join(shots,'demo-'+size+'.csv'));
+  const demoCsv=fs.readFileSync(path.join(shots,'demo-'+size+'.csv'),'utf8');
+  assert(demoCsv.includes('Noor')&&!demoCsv.includes('Sam'),'Filtered demo CSV contains only employee B');
+  await page.locator('#reset').click();
+  assert((await page.locator('#submitted').innerText())==='2','Demo reset restores initial statuses');
   await context.close();
-  console.log(size+' PASS: 8 pages, no overflow/JS errors, calculator and intake interactions');
+  console.log(size+' PASS: 9 pages, no overflow/JS errors, calculator and intake interactions');
  }
  }finally{await browser.close();}
 }

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="nl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Urenapp interactieve demo — HabbekratsAlgorythms</title>
+<meta name="description" content="Probeer de urenregistratie met fictieve gegevens, zonder account of echte personeelsgegevens.">
+<style>
+:root{font:16px/1.5 system-ui,sans-serif;color:#eaf2f9;background:#0a1824}*{box-sizing:border-box}
+body{margin:0}header,main,footer{max-width:980px;margin:auto;padding:20px}
+header{padding-top:32px}a{color:#9be7f7}h1{font-size:clamp(25px,4vw,40px);line-height:1.15;margin:.5em 0}
+h2{font-size:20px}p{margin:10px 0}.muted{color:#b5c8d5}.tag{display:inline-block;background:#173c33;color:#b9f6d7;padding:5px 9px;border-radius:8px;font-weight:700;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.card{background:#132b3c;border:1px solid #3b5b6d;border-radius:14px;padding:16px;margin:15px 0}
+.stat{font-size:27px;font-weight:800}button,select{font:inherit;padding:10px 13px;border-radius:8px;border:1px solid #85c9e0}
+button{background:#a5edc2;color:#092418;font-weight:750;cursor:pointer}button.secondary{background:#24475c;color:white}
+button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #ffe77b;outline-offset:3px}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.entry{border-top:1px solid #3b5365;padding:12px 0}
+.entry:first-of-type{border-top:0}label{display:block;margin:12px 0 5px}select{width:100%;max-width:320px;background:#0e2030;color:#fff}
+small{color:#b9cbd4}#notice{min-height:1.5em;color:#b4f1ce}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.stat{font-size:23px}}
+@media print{body{background:white;color:#111}button,select,.tag{display:none}.card{background:white;color:#111;border-color:#aaa}small,.muted{color:#555}}
+</style></head>
+<body><header>
+<a href="../uren/">Terug naar urenregistratie</a>
+<p class="tag">VEILIGE INTERACTIEVE DEMO · ALLE GEGEVENS FICTIEF</p>
+<h1>Probeer de urenapp zonder account</h1>
+<p class="muted">Bekijk een medewerker, een beheerder, urenregistraties en goedkeuringen. Alles draait uitsluitend in deze browser; er is geen databasekoppeling, account, netwerkverzoek of opslag. Na verversen zijn de voorbeeldgegevens teruggezet.</p>
+</header>
+<main>
+<section class="grid" aria-label="Maandoverzicht">
+<div class="card"><div class="muted">Gewerkte manuren</div><div class="stat" id="hours">—</div></div>
+<div class="card"><div class="muted">Ingediend</div><div class="stat" id="submitted">—</div></div>
+<div class="card"><div class="muted">Goedgekeurd</div><div class="stat" id="approved">—</div></div>
+</section>
+<section class="card" aria-labelledby="filterTitle"><h2 id="filterTitle">1. Bekijk een medewerker</h2>
+<label for="person">Medewerker</label><select id="person"><option value="all">Alle fictieve medewerkers</option><option value="a">Sam</option><option value="b">Noor</option></select>
+<label for="status">Status</label><select id="status"><option value="all">Alle statussen</option><option value="submitted">Ingediend</option><option value="approved">Goedgekeurd</option><option value="draft">Concept</option><option value="rejected">Afgewezen</option></select>
+</section>
+<section class="card" aria-labelledby="entryTitle"><h2 id="entryTitle">2. Registraties</h2><p class="muted">Een beheerder kan een ingediende fictieve registratie goedkeuren of afwijzen. Goedkeuringen zijn in deze demo daarna vergrendeld.</p>
+<div id="entries" aria-live="polite"></div>
+</section>
+<section class="card" aria-labelledby="exportTitle"><h2 id="exportTitle">3. Exporteer een maandstaat</h2>
+<p>De CSV bevat alleen de momenteel gefilterde voorbeeldregistraties. De export gaat rechtstreeks naar jouw apparaat.</p>
+<div class="row"><button id="export">Download demo-CSV</button><button class="secondary" id="reset">Herstel voorbeeldgegevens</button></div>
+<p id="notice" role="status" aria-live="polite"></p></section>
+<section class="card"><h2>Wil je deze urenregistratie testen voor jouw bedrijf?</h2>
+<p>We zoeken pilotgebruikers. De echte app is nog niet vrijgegeven voor echte personeels- of klantgegevens; we bespreken vooraf de testafspraken en privacy.</p>
+<a href="mailto:habbekratsalgorythms@gmail.com?subject=Interesse%20urenregistratiepilot">Vraag vrijblijvend een pilot aan</a></section>
+</main><footer class="muted">HabbekratsAlgorythms · Deze demonstratie bewaart niets en doet geen echte betalingen, goedkeuringen of mutaties.</footer>
+<script>
+"use strict";
+const demoRows=[
+{id:1,person:"a",client:"Fictieve Werkplaats",date:"2026-11-02",from:"09:00",to:"12:30",breakMinutes:30,persons:1,status:"submitted"},
+{id:2,person:"b",client:"Voorbeeldkantoor",date:"2026-11-03",from:"08:00",to:"11:00",breakMinutes:0,persons:2,status:"approved"},
+{id:3,person:"a",client:"Voorbeeldkantoor",date:"2026-11-04",from:"10:15",to:"12:45",breakMinutes:15,persons:1,status:"draft"},
+{id:4,person:"b",client:"Fictieve Werkplaats",date:"2026-11-05",from:"14:00",to:"17:15",breakMinutes:15,persons:1,status:"submitted"},
+{id:5,person:"a",client:"Fictieve Werkplaats",date:"2026-11-06",from:"09:00",to:"11:00",breakMinutes:0,persons:1,status:"rejected"}
+];
+const baseRows=demoRows.map(x=>({...x}));const $=id=>document.getElementById(id);
+const labels={submitted:"Ingediend",approved:"Goedgekeurd",draft:"Concept",rejected:"Afgewezen"};
+const names={a:"Sam",b:"Noor"};
+function minutes(x){const hm=s=>{const [h,m]=s.split(":").map(Number);return h*60+m};return Math.max(0,(hm(x.to)-hm(x.from)+1440)%1440-x.breakMinutes)*x.persons}
+function formatHours(n){return (n/60).toLocaleString("nl-NL",{minimumFractionDigits:2,maximumFractionDigits:2})+" u"}
+function visible(){const p=$("person").value,s=$("status").value;return demoRows.filter(x=>(p==="all"||x.person===p)&&(s==="all"||x.status===s))}
+function render(){
+ const filtered=visible(),total=filtered.reduce((n,x)=>n+minutes(x),0);
+ $("hours").textContent=formatHours(total);
+ $("submitted").textContent=String(filtered.filter(x=>x.status==="submitted").length);
+ $("approved").textContent=String(filtered.filter(x=>x.status==="approved").length);
+ const list=$("entries");list.replaceChildren();
+ if(!filtered.length){const p=document.createElement("p");p.textContent="Geen registraties bij deze filters.";list.append(p)}
+ for(const x of filtered){
+  const row=document.createElement("article");row.className="entry";
+  const title=document.createElement("strong");title.textContent=x.date+" · "+names[x.person]+" · "+x.client;
+  const details=document.createElement("p");details.textContent=x.from+"–"+x.to+" · "+x.persons+" persoon/personen · "+formatHours(minutes(x))+" · "+labels[x.status];
+  row.append(title,details);
+  if(x.status==="submitted"){
+    const actions=document.createElement("div");actions.className="row";
+    for(const [status,text] of [["approved","Goedkeuren"],["rejected","Afwijzen"]]){
+      const button=document.createElement("button");button.className=status==="rejected"?"secondary":"";
+      button.textContent=text;
+      button.addEventListener("click",()=>{if(x.status!=="submitted")return;x.status=status;$("notice").textContent="Demoregistratie "+text.toLowerCase()+". Er is niets opgeslagen.";render()});
+      actions.append(button);
+    }row.append(actions)
+  }
+  list.append(row);
+ }
+}
+function csv(){
+ const rows=[["Datum","Medewerker","Klant","Begin","Einde","Pauze minuten","Personen","Manuren","Status"]];
+ for(const x of visible())rows.push([x.date,names[x.person],x.client,x.from,x.to,x.breakMinutes,x.persons,(minutes(x)/60).toFixed(2).replace(".",","),labels[x.status]]);
+ const contents="\uFEFF"+rows.map(cols=>cols.map(c=>'"'+String(c).replaceAll('"','""')+'"').join(";")).join("\r\n");
+ const blob=new Blob([contents],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;a.download="urenapp-fictieve-maandstaat.csv";document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);
+ $("notice").textContent="Fictieve CSV gedownload; er is niets gedeeld met een server.";
+}
+$("person").addEventListener("change",render);$("status").addEventListener("change",render);
+$("export").addEventListener("click",csv);
+$("reset").addEventListener("click",()=>{
+ demoRows.splice(0,demoRows.length,...baseRows.map(x=>({...x})));
+ $("person").value="all";$("status").value="all";$("notice").textContent="Fictieve gegevens zijn teruggezet.";render()
+});
+render();
+</script></body></html>
