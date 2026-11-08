@@ -1,6 +1,6 @@
 const fs=require('fs'),path=require('path'),assert=require('assert');
 const root=path.resolve(__dirname,'..');
-const dirs=['.','studio','uren','offertecalculator','microservices','affiliate','klyptiq'];
+const dirs=['.','studio','uren','demo','offertecalculator','microservices','affiliate','klyptiq'];
 let checked=0, links=0;
 for(const dir of dirs){
  const fullDir=path.join(root,dir);
