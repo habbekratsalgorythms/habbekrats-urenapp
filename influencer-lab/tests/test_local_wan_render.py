@@ -83,7 +83,7 @@ class WanLocalTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"Graph link escapes"):wan.validate_api_workflow(wf)
 
     def test_refuse_image_name_traversal(self):
-        for name in ("../foo.png","folder.png","unsafe;echo.png"):
+        for name in ("../foo.png","foo/bar.png","unsafe;echo.png"):
             with self.subTest(name=name),self.assertRaises(ValueError):
                 wan.build_workflow(fixture(),"vexa-volt",name)
 
