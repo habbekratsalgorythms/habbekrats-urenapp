@@ -61,7 +61,7 @@ button.secondary{background:#2b425a;color:#eff6fc}
 <section class="panel" id="joinPanel" style="display:none"><h2>Uitnodiging accepteren</h2><p class="muted">Heb je van je werkgever een uitnodigingscode gekregen? Log in en plak de code hier.</p><label for="joinCode">Uitnodigingscode</label><input id="joinCode" type="text" maxlength="48" autocomplete="off" placeholder="48 tekens"><div class="actions"><button id="acceptInvite" type="button">Deelnemen aan bedrijf</button></div></section>
 <section class="panel" id="clientPanel" style="display:none"><h2>Klanten</h2><div class="grid"><input id="clientName" placeholder="Naam nieuwe klant"><button id="addClient">Klant toevoegen</button></div></section>
 <section class="panel" id="entryPanel" style="display:none"><p id="editNotice" class="edit-notice" role="status" style="display:none"></p><div id="clientTabs" class="client-tabs" role="tablist" aria-label="Kies klant"></div><h2>Nieuwe registratie</h2><p id="currentClient" class="current-client" aria-live="polite">Selecteer een klant om uren te registreren.</p><select id="client" aria-label="Geselecteerde klant" hidden></select><div class="grid"><div><label>Datum</label><input id="date" type="date"></div><div><label>Weeknummer</label><input id="week" disabled></div><div><label>Begin</label><input id="start" type="time" value="11:00"></div><div><label>Einde</label><input id="end" type="time" value="13:00"></div><div><label>Aantal personen</label><input id="persons" type="number" min="1" max="100" value="2"></div><div><label>Pauze per persoon (min)</label><input id="pause" type="number" min="0" max="1439" value="0"></div><div class="full"><label>Notities</label><textarea id="notes" maxlength="2000"></textarea></div></div><div class="metric" id="computed">4,00 manuren</div><div class="actions"><button id="save">Opslaan</button></div><p id="saveStatus" role="status" aria-live="polite"></p></section>
-<section class="panel" id="statsPanel" style="display:none"><h2>Mijn urenoverzicht</h2><div class="grid"><div><label>Maand</label><input id="month" type="month"></div><div><label>Totaal manuren</label><div class="metric" id="monthTotal">0 uur</div></div></div><div class="actions"><button class="secondary" id="exportCsv">Download maandstaat (CSV)</button></div><p class="muted">CSV werkt in Excel en Google Spreadsheets. Een echte XLSX-export volgt.</p></section><section class="panel" id="reviewPanel" style="display:none"><h2>Ingediende uren van dit bedrijf <span id="reviewCount"></span></h2><div id="reviewItems"></div></section><section class="panel" id="listPanel" style="display:none"><h2>Mijn urenregistraties</h2><div id="entries"></div></section></div></div><p id="message"></p><small class="legal-note">Testversie: gebruik voorlopig geen echte personeels- of klantgegevens voordat de volledige beveiliging is getest.</small></main>
+<section class="panel" id="statsPanel" style="display:none"><h2>Mijn urenoverzicht per klant</h2><div class="grid"><div><label>Maand</label><input id="month" type="month"></div><div><label>Totaal manuren</label><div class="metric" id="monthTotal">0 uur</div></div></div><div class="actions"><button class="secondary" id="exportCsv">Download maandstaat (CSV)</button></div><p class="muted">CSV werkt in Excel en Google Spreadsheets. Een echte XLSX-export volgt.</p></section><section class="panel" id="reviewPanel" style="display:none"><h2>Ingediende uren van dit bedrijf <span id="reviewCount"></span></h2><div id="reviewItems"></div></section><section class="panel" id="listPanel" style="display:none"><h2>Registraties voor geselecteerde klant</h2><div id="entries"></div></section></div></div><p id="message"></p><small class="legal-note">Testversie: gebruik voorlopig geen echte personeels- of klantgegevens voordat de volledige beveiliging is getest.</small></main>
 <script type="module">
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.57.0';
 const db=createClient('https://tgpvissgdojcqgagyfpw.supabase.co','sb_publishable_2GYfeKtWuTS5Sk3Zxdn5Yw_oDmF56vG');
@@ -173,6 +173,8 @@ function selectClient(id){
   const selected=tab.dataset.clientId===id;
   tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;
  }
+ updateStats();
+ renderEntries();
 }
 async function loadClients(){
  const existingId=$('client').value;
@@ -215,8 +217,12 @@ async function loadEntries(){
   if((data||[]).length<pageSize)break;
  }
  $('exportCsv').disabled=false;
- entryCache=all;updateStats();$('entries').replaceChildren();
- for(const x of entryCache){
+ entryCache=all;updateStats();renderEntries();
+}
+function renderEntries(){
+ $('entries').replaceChildren();
+ const chosenClient=$('client').value;
+ for(const x of entryCache.filter(entry=>entry.client_id===chosenClient)){
   const row=document.createElement('div');row.className='item';
   const title=document.createElement('strong');
   const client=$('client').querySelector('option[value="'+x.client_id+'"]');
@@ -285,9 +291,9 @@ $('save').onclick=async()=>{
 };
 
 $('month').onchange=updateStats;
-function selectedEntries(){return entryCache.filter(x=>x.work_date.slice(0,7)===$('month').value)}
+function selectedEntries(){const client=$('client').value;return entryCache.filter(x=>x.client_id===client&&x.work_date.slice(0,7)===$('month').value)}
 function updateStats(){let t=selectedEntries().reduce((sum,x)=>sum+x.total_person_minutes,0);$('monthTotal').textContent=(t/60).toLocaleString('nl-NL',{maximumFractionDigits:2})+' uur'}
-$('exportCsv').onclick=()=>{let rows=[['Datum','Begin','Einde','Personen','Manuren','Status'],...selectedEntries().map(x=>[x.work_date,x.start_time.slice(0,5),x.end_time.slice(0,5),x.person_count,(x.total_person_minutes/60).toFixed(2).replace('.',','),x.status])];let cell=v=>'"'+String(v).replaceAll('"','""')+'"';let csv='\uFEFF'+rows.map(row=>row.map(cell).join(';')).join('\r\n');let blob=new Blob([csv],{type:'text/csv;charset=utf-8'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='urenstaat-'+$('month').value+'.csv';a.click();URL.revokeObjectURL(url)};
+$('exportCsv').onclick=()=>{const clientName=$('client').selectedOptions[0]?.textContent||'Onbekende klant';let rows=[['Klant','Datum','Begin','Einde','Personen','Manuren','Status'],...selectedEntries().map(x=>[clientName,x.work_date,x.start_time.slice(0,5),x.end_time.slice(0,5),x.person_count,(x.total_person_minutes/60).toFixed(2).replace('.',','),x.status])];let cell=v=>'"'+String(v).replaceAll('"','""')+'"';let csv='\uFEFF'+rows.map(row=>row.map(cell).join(';')).join('\r\n');let blob=new Blob([csv],{type:'text/csv;charset=utf-8'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='urenstaat-'+$('month').value+'-'+clientName.toLowerCase().replace(/[^a-z0-9]+/g,'-').slice(0,40)+'.csv';a.click();URL.revokeObjectURL(url)};
 async function loadReviews(){
  if(!isOwner)return;
  const {data,error}=await db.rpc('get_pending_time_reviews',{target_organization:org.id});
