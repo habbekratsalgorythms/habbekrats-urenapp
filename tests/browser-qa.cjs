@@ -17,7 +17,7 @@ const server=http.createServer((req,res)=>{
 });
 const pages=['studio/index.html','offertecalculator/index.html','microservices/index.html',
 'microservices/voorbeeldpakket.html','affiliate/index.html','affiliate/redactiebeleid.html',
-'uren/index.html','demo/index.html','klyptiq/index.html'];
+'uren/index.html','demo/index.html','klyptiq/index.html','klyptiq/transparantie.html'];
 async function run(){
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const origin='http://127.0.0.1:'+server.address().port+'/';
@@ -37,6 +37,11 @@ async function run(){
     await page.screenshot({path:path.join(shots,pagePath.replaceAll('/','_')+'_'+size+'.png'),fullPage:true});
    }
   }
+  await page.goto(origin+'klyptiq/index.html');
+  assert((await page.locator('a[href="transparantie.html"]').count())>=1,'Gaming partner page links to disclosure');
+  assert((await page.locator('a[href^="mailto:"]').count())>=1,'Klyptiq business contact available');
+  await page.goto(origin+'klyptiq/transparantie.html');
+  assert((await page.locator('main').innerText()).includes('geen actieve affiliatelinks'),'No fake active affiliate offers');
   await page.goto(origin+'offertecalculator/index.html');
   assert((await page.locator('#price').innerText()).includes('69,27'),'Reference quote amount');
   await page.locator('#currentPrice').fill('75');
@@ -88,7 +93,7 @@ async function run(){
   await page.locator('#reset').click();
   assert((await page.locator('#submitted').innerText())==='2','Demo reset restores initial statuses');
   await context.close();
-  console.log(size+' PASS: 9 pages, no overflow/JS errors, calculator and intake interactions');
+  console.log(size+' PASS: 10 pages, no overflow/JS errors, calculator, partner disclosure and intake interactions');
  }
  }finally{await browser.close();}
 }
