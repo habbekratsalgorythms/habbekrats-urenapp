@@ -77,3 +77,16 @@ De eerder ontbrekende **echte browsercontrole is alsnog uitgevoerd op GitHub Act
 - Afzonderlijk artifact `Habbekrats-five-track-review-pages` bevat de review-only pagina's, niet de live app.
 
 **Nog niet bewezen:** daadwerkelijke print/PDF-opmaak, productie Supabase-auth met echte medewerkers/tenants, e-mailverificatie, betaalacceptatie, uitgevoerde leveringen en commerciële klanten. PR #1 blijft bewust draft.
+
+## 8 november 2026 — snelle publieke voorlancering & beveiligingstest
+
+- **Publieke marketing-/proefpagina's zijn gepubliceerd** via afzonderlijke laag-risico PR #2: https://github.com/habbekratsalgorythms/habbekrats-urenapp/pull/2 (merged, main `4a8b8b18f6e700aa259ea6891c34c1d3c34e3947`).
+- GitHub Pages deploy `42498052184` is **SUCCESS**: https://github.com/habbekratsalgorythms/habbekrats-urenapp/actions/runs/42498052184.
+- Nieuw gepubliceerde paden: `/studio/`, `/offertecalculator/`, `/microservices/`, `/microservices/voorbeeldpakket.html`, `/affiliate/`, `/affiliate/redactiebeleid.html`, `/klyptiq/`, `/uren/`. **Geen checkout of persoonsgegevensverzameling toegevoegd.**
+- Bevestigde website-QA `42497969706`: Chromium desktop en mobiel, linktest, rekenfunctie, CSV, aanvraagbriefing en geen private keys in HTML = SUCCESS.
+- **Supabase READ ONLY tenant-isolatie:** twee bestaande bedrijfs-eigenaren bleken verschillende accounts; in een READ ONLY transactie met tijdelijke rol `authenticated` + hun eigen JWT-sub-claim zag ieder **precies 1 eigen bedrijf, 0 andere bedrijven, 0 buitenlandse urenregistraties**. Wel eigen respectievelijk 1 en 8 urenregistraties zichtbaar. Alle testtransacties beëindigd met ROLLBACK, geen records aangepast. Dit toont alleen eigenaar/eigenaar-isolatie; medewerkersuitnodiging/acceptatie/review en mailverificatie blijven onbewezen.
+- Bestaande database-trigger `public.protect_time_entries()` is gecontroleerd: eigenaar/gebruikersidentificatievelden onveranderlijk, goedkeuringsvelden beschermd bij requests als `authenticated`, reeds ingediende/goedgekeurde uren niet direct wijzigbaar. Niet opnieuw gebouwd. Four existing SECDEF RPC warnings en leaked-password-protection setting moeten nog apart worden beoordeeld.
+- **Klyptiq release-week:** drie officiële bronverifieerbare scripts en drie 1080p Kokoro-videorenders zijn getest en via afzonderlijke PR #5 geïntegreerd in de Klyptiq-code. Social posts/onbetaalde rechten blijven ongewijzigd.
+- **Gmail-leadbewaking**: de gekoppelde zakelijke inbox `habbekratsalgorythms@gmail.com` is bevestigd; nieuwe dagelijkse automatisering `Habbekrats zakelijke aanvragen` aangemaakt, controleert op relevante zakelijke leads en toont uitsluitend echte nieuwe aanvragen, geen automatische replies of betalingen.
+
+**Nog niet geregeld en vereist vóór betaalde verkoop:** keuze bestaande/nieuwe KvK-bedrijfsregistratie, juiste btw-/prijsstelling, formele voorwaarden en betaalprovider; gebruiker heeft prioriteitenlijst gekregen. Urenapp blijft NO-GO voor echte personeelsdata zonder volledige medeweker-/RLS-test. De eerder bestaande concept-PR #1 blijft draft en wordt niet geheel gemerged. Tests ≠ vijf bedrijven met omzet.
