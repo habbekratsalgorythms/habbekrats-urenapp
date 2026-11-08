@@ -16,7 +16,7 @@ const server=http.createServer((req,res)=>{
  fs.createReadStream(file).pipe(res);
 });
 const pages=['studio/index.html','offertecalculator/index.html','microservices/index.html',
-'microservices/voorbeeldpakket.html','affiliate/index.html','affiliate/redactiebeleid.html',
+'microservices/voorbeeldpakket.html','microservices/werkwijze.html','affiliate/index.html','affiliate/redactiebeleid.html',
 'uren/index.html','demo/index.html','klyptiq/index.html','klyptiq/transparantie.html'];
 async function run(){
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -55,12 +55,20 @@ async function run(){
   assert(await page.locator('#printQuote').isDisabled(),'Invalid quote print must be disabled');
   assert(await page.locator('#exportQuote').isDisabled(),'Invalid CSV must be disabled');
   await page.goto(origin+'microservices/index.html');
+  assert((await page.locator('header').innerText()).includes('€79'),'Fixed content pack price visible');
+  assert((await page.locator('header').innerText()).includes('Twee correctierondes'),'Two correct rounds shown');
   await page.locator('#business').fill('Fictieve fietsenmaker');
   await page.locator('#audience').fill('Forenzen');
   await page.locator('#facts').fill('Geen garanties of ongecontroleerde claims');
   await page.locator('#brief button').click();
   assert((await page.locator('#result').innerText()).includes('Fictieve fietsenmaker'));
+  assert((await page.locator('#result').innerText()).includes('5 werkdagen'),'Approved lead time in draft');
+  assert((await page.locator('#result').innerText()).includes('2 gebundelde rondes'),'Approved review policy in draft');
   assert((await page.locator('#mail').getAttribute('href')).startsWith('mailto:'));
+  await page.goto(origin+'microservices/werkwijze.html');
+  assert((await page.locator('header').innerText()).includes('€79'),'Service terms show fixed price');
+  await page.goto(origin+'offertecalculator/index.html');
+  assert((await page.locator('#advieskop').innerText()).includes('€19,95'),'Approved Pro price shown');
   await page.goto(origin+'affiliate/index.html');
   await page.locator('#budget').fill('0');
   await page.locator('#check button').click();
@@ -93,7 +101,7 @@ async function run(){
   await page.locator('#reset').click();
   assert((await page.locator('#submitted').innerText())==='2','Demo reset restores initial statuses');
   await context.close();
-  console.log(size+' PASS: 10 pages, no overflow/JS errors, calculator, partner disclosure and intake interactions');
+  console.log(size+' PASS: 11 pages, no overflow/JS errors, calculator pricing, two-round content intake, partner disclosure');
  }
  }finally{await browser.close();}
 }

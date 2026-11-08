@@ -1,1 +1,95 @@
-<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Habbekrats Studio · Contentbriefing</title><meta name="description" content="Habbekrats Studio · Contentbriefing"><style>*{box-sizing:border-box}body{margin:0;font:17px/1.6 system-ui;background:#091724;color:#eaf3fa}header,main,footer{max-width:1040px;margin:auto;padding:24px}header{padding-top:54px}h1{font-size:clamp(32px,6vw,62px);line-height:1.1;max-width:850px}h2{line-height:1.25}.lead{font-size:21px;color:#bad0df;max-width:740px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}.card{padding:24px;border:1px solid #355064;border-radius:18px;background:#112738;margin:20px 0}a{color:#67dcff}button,.button{display:inline-block;background:#a9edb8;color:#092618;padding:12px 18px;border-radius:8px;border:0;font:inherit;font-weight:700;cursor:pointer}label{display:block;margin-top:16px}input,textarea,select{display:block;width:100%;padding:12px;border:1px solid #718da1;border-radius:8px;background:#091724;color:white;font:inherit}textarea{min-height:130px}pre{white-space:pre-wrap;overflow-wrap:anywhere}small,footer{color:#b2c7d6}:focus-visible{outline:3px solid #67dcff;outline-offset:4px}@media print{body{background:white;color:black}button{display:none}.card{background:white;border-color:#bbb}a{color:black}}</style></head><body><header><a href="../studio/">HabbekratsAlgorythms Studio</a><p>AI-CONTENTDIENST · VOORLANCERING</p><h1>Van losse ideeën naar tien bruikbare posts.</h1><p class="lead">Voor kleine bedrijven die regelmatig iets willen plaatsen. Tien Nederlandse captions, een planning en één correctieronde. Richtprijs €79; definitieve prijs en eventuele btw volgen in een offerte.</p></header><main><div class="grid"><section class="card"><h2>Zo werkt het</h2><ol><li>Vul de briefing in.</li><li>Bewaar de briefing en vraag vrijblijvend een offerte.</li><li>Na akkoord op prijs, termijn en voorwaarden kan uitvoering starten.</li></ol><p>Geen automatische bestelling. Er wordt niets verzonden of opgeslagen door deze pagina. Inhoud wordt bij uitvoering met AI voorbereid en gecontroleerd. Bereik en omzet worden niet gegarandeerd.</p></section><section class="card"><h2>Voorbeeld · fictieve fietsenmaker</h2><p>“Zacht bandje? Even oppompen helpt, maar controleer ook of je band langzaam leegloopt. Kom langs voor een controle; we bespreken eventuele kosten voordat we beginnen.”</p><p><small>Voorbeeldtekst; openingstijden, tarieven en claims worden altijd bij de klant gecontroleerd.</small></p><p><a class="button" href="voorbeeldpakket.html">Bekijk het volledige voorbeeldpakket met 10 captions</a></p></section></div><form id="brief" class="card"><h2>Maak je contentbriefing</h2><label for="business">Bedrijf en aanbod</label><textarea id="business" required maxlength="1500"></textarea><label for="audience">Doelgroep</label><input id="audience" required maxlength="300"><label for="goal">Doel van de posts</label><select id="goal"><option>Meer offerteaanvragen</option><option>Meer winkelbezoek</option><option>Bekendheid opbouwen</option></select><label for="tone">Toon</label><select id="tone"><option>Helder en vriendelijk</option><option>Zakelijk en deskundig</option><option>Speels en informeel</option></select><label for="facts">Gecontroleerde feiten, beperkingen en gewenste actie</label><textarea id="facts" required maxlength="2000"></textarea><p><small>Voer geen klantgegevens, wachtwoorden of vertrouwelijke informatie in.</small></p><button>Briefing maken</button><pre id="result" role="status"></pre><a id="mail" hidden>Vrijblijvende offerteaanvraag openen</a></form></main><footer>Contact: habbekratsalgorythms@gmail.com · Nog geen betaal- of automatische leveringsfunctie.</footer><script>document.getElementById('brief').addEventListener('submit',e=>{e.preventDefault();const v=id=>document.getElementById(id).value.trim();const text=['CONTENTBRIEFING — 10 POSTS','Bedrijf: '+v('business'),'Doelgroep: '+v('audience'),'Doel: '+v('goal'),'Toon: '+v('tone'),'Feiten en grenzen: '+v('facts'),'Gewenste levering: 10 Nederlandse captions, invalshoeken, planning en één correctieronde.','Controleer elke feitelijke claim; verzin geen reviews, prijzen of resultaten.','Graag eerst een offerte met totaalprijs, eventuele btw, levertermijn en voorwaarden.'].join('\n\n');document.getElementById('result').textContent=text;const a=document.getElementById('mail');a.href='mailto:habbekratsalgorythms@gmail.com?subject='+encodeURIComponent('Vrijblijvende aanvraag: contentpakket')+'&body='+encodeURIComponent(text);a.hidden=false;});</script></body></html>
+<!doctype html><html lang="nl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="../assets/habbekrats-icon.svg">
+<title>10 social captions + planning · €79 excl. btw | Habbekrats Studio</title>
+<meta name="description" content="Vaste contentdienst voor kleine bedrijven: 10 originele Nederlandse captions met planning voor €79 excl. btw, levering binnen 5 werkdagen na complete briefing en opdrachtbevestiging, twee correctierondes.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#091724;color:#eaf3fa;font:17px/1.6 system-ui}
+header,main,footer{max-width:1040px;margin:auto;padding:24px}header{padding-top:48px}h1{font-size:clamp(32px,6vw,57px);line-height:1.1;max-width:850px}
+h2{line-height:1.25}.lead{font-size:20px;color:#bdd5e3;max-width:800px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:17px}
+.card{padding:23px;border:1px solid #355064;border-radius:17px;background:#112738;margin:18px 0}
+a{color:#67dcff}button,.button{display:inline-block;background:#a9edb8;color:#092618;padding:12px 18px;border-radius:9px;border:0;font:inherit;font-weight:750;cursor:pointer}
+label{display:block;margin-top:15px;font-weight:650}input,textarea,select{display:block;width:100%;padding:12px;border:1px solid #718da1;border-radius:8px;background:#091724;color:white;font:inherit}
+textarea{min-height:115px}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:470px;overflow:auto}
+small,footer{color:#b2c7d6}.price{font-size:38px;font-weight:800;color:#b8fad6;line-height:1.2}
+.note{color:#b9d0de;font-size:14px}.features{padding-left:23px}li{margin:8px 0}
+:focus-visible{outline:3px solid #67dcff;outline-offset:4px}
+@media print{body{background:white;color:black}button{display:none}.card{background:white;border-color:#bbb}}
+</style></head>
+<body>
+<header><p><a href="../studio/">HabbekratsAlgorythms Studio</a></p>
+<p>AI-CONTENTDIENST · VASTE PRIJS · VOORLANCERING</p>
+<h1>Tien goede captions. Eén overzichtelijke contentplanning.</h1>
+<div class="price">€79 <small>exclusief btw · geen abonnement</small></div>
+<p class="lead">Voor kleine bedrijven: tien Nederlandse captions met verschillende invalshoeken en een eenvoudige publicatieplanning. Levering binnen <strong>5 werkdagen</strong> na een complete briefing én opdrachtbevestiging. <strong>Twee correctierondes</strong> inbegrepen.</p></header>
+<main>
+<div class="grid">
+<section class="card"><h2>Dit krijg je</h2>
+<ul class="features"><li>10 originele Nederlandstalige captions met verschillende invalshoeken.</li>
+<li>Een overzicht met voorgestelde publicatiedagen, onderwerp en doel per caption.</li>
+<li>Tekstuele calls-to-action op basis van jouw gecontroleerde bedrijfsinformatie.</li>
+<li>2 gebundelde correctierondes binnen dezelfde briefing.</li>
+<li>Een exporteerbaar overzicht bij de uiteindelijke levering.</li></ul>
+<p class="note">Niet inbegrepen: afbeeldingen/video's, posten op sociale media, beheer van accounts, gegarandeerde views of advertentieresultaten.</p></section>
+<section class="card"><h2>Zo werkt het</h2>
+<ol><li>Vul hieronder een briefing in; dit is nog geen bestelling.</li>
+<li>We controleren of de informatie compleet is en bevestigen dan schriftelijk de opdrachtvoorwaarden.</li>
+<li>Vanaf dat moment leveren we het eerste pakket binnen 5 werkdagen.</li>
+<li>Je kunt uiterlijk 5 werkdagen na de eerste levering een correctieverzoek insturen. Twee rondes binnen de oorspronkelijke opdracht zijn inbegrepen.</li></ol>
+<p><a class="button" href="voorbeeldpakket.html">Bekijk een volledig fictief voorbeeldpakket</a></p>
+<p><a href="werkwijze.html">Lees wat inbegrepen is en hoe de correcties werken</a>.</p></section>
+</div>
+<form id="brief" class="card">
+<h2>Vrijblijvende contentbriefing</h2>
+<p class="note">De pagina bewaart of verzendt niets automatisch. Je bekijkt de briefing eerst zelf; daarna open je op eigen initiatief een e-mailconcept.</p>
+<label for="business">Bedrijf en daadwerkelijk aanbod</label>
+<textarea id="business" required maxlength="1500" placeholder="Beschrijf de dienst of het product, zonder klantgegevens."></textarea>
+<label for="audience">Doelgroep</label><input id="audience" required maxlength="300" placeholder="Bijvoorbeeld: jonge gezinnen in Breda">
+<label for="platform">Voorkeursplatform</label>
+<select id="platform"><option>Instagram</option><option>Facebook</option><option>LinkedIn</option><option>TikTok (captions, geen video)</option><option>Meerdere platforms</option></select>
+<label for="goal">Doel van de posts</label>
+<select id="goal"><option>Meer offerteaanvragen</option><option>Meer winkelbezoek</option><option>Bekendheid opbouwen</option><option>Vaste klanten informeren</option></select>
+<label for="tone">Toon</label>
+<select id="tone"><option>Helder en vriendelijk</option><option>Zakelijk en deskundig</option><option>Speels en informeel</option></select>
+<label for="cta">Gewenste actie voor lezers</label><input id="cta" maxlength="300" placeholder="Bijvoorbeeld: vraag vrijblijvend informatie aan">
+<label for="facts">Gecontroleerde feiten, aanbiedingen en belangrijke grenzen</label>
+<textarea id="facts" required maxlength="2000" placeholder="Alleen feiten die je kunt bevestigen. Vermeld wat absoluut niet beweerd mag worden."></textarea>
+<label for="topics">Voorkeursthema's of onderwerpen (optioneel)</label>
+<textarea id="topics" maxlength="1000" placeholder="Voorbeeld: veelgestelde vragen, tips, seizoensonderwerpen."></textarea>
+<p class="note">Geen wachtwoorden, persoonsgegevens van klanten, vertrouwelijke marketingdata of onbevestigde verkoopaantallen invullen.</p>
+<button type="submit">Maak mijn vrijblijvende briefing</button>
+<pre id="result" role="status" aria-live="polite"></pre>
+<a id="mail" class="button" hidden>Open vrijblijvende aanvraag in e-mail</a>
+</form>
+<p class="note">Pakketprijs: €79 exclusief btw (bij 21% btw €95,59 incl.). Twee correctierondes moeten binnen vijf werkdagen na de eerste levering worden aangevraagd. Een ronde betekent één verzameld wijzigingsverzoek; nieuwe thema's of aanvullende posts zijn meerwerk en worden vooraf afzonderlijk geoffreerd. Bestellen en betalen kan nog niet via deze website.</p>
+</main><footer>Zakelijk contact: <a href="mailto:habbekratsalgorythms@gmail.com">habbekratsalgorythms@gmail.com</a> · Geen automatische betalingen of levering.</footer>
+<script>
+document.getElementById('brief').addEventListener('submit',e=>{
+ e.preventDefault();
+ const v=id=>document.getElementById(id).value.trim();
+ const text=[
+ 'VRIJBLIJVENDE AANVRAAG — CONTENTPAKKET',
+ 'Product: 10 Nederlandse captions met eenvoudige publicatieplanning',
+ 'Vaste pakketprijs: €79 excl. btw (geen abonnement)',
+ 'Levering: uiterlijk 5 werkdagen na complete briefing EN opdrachtbevestiging',
+ 'Correcties: 2 gebundelde rondes binnen oorspronkelijke opdracht; verzoek binnen 5 werkdagen na eerste levering',
+ 'Niet inbegrepen: ontwerp, video, social-accountbeheer, publicatie of resultaatgarantie',
+ 'Bedrijf en aanbod: '+v('business'),
+ 'Doelgroep: '+v('audience'),
+ 'Platform: '+v('platform'),
+ 'Doel: '+v('goal'),
+ 'Toon: '+v('tone'),
+ 'Gewenste call-to-action: '+(v('cta')||'Graag voorstellen'),
+ 'Geverifieerde feiten en grenzen: '+v('facts'),
+ 'Voorkeursthema’s: '+(v('topics')||'Geen opgegeven'),
+ 'Controleer alle prijsclaims, openingstijden, reviews en wettelijke claims vooraf; verzin geen gegevens.',
+ 'Dit is een vrijblijvende aanvraag, geen bestelling of betaling. Graag eerst beschikbaarheid en voorwaarden bevestigen.'
+ ].join('\n\n');
+ document.getElementById('result').textContent=text;
+ const a=document.getElementById('mail');
+ a.href='mailto:habbekratsalgorythms@gmail.com?subject='+encodeURIComponent('Vrijblijvende aanvraag: 10 captions €79 excl. btw')+'&body='+encodeURIComponent(text);
+ a.hidden=false;
+});
+</script>
+</body></html>

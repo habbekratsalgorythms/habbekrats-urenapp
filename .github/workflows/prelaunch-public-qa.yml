@@ -24,8 +24,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate 9 public landing pages, internal links, and assets
+      - name: Validate public landing pages, internal links, and assets
         run: node tests/check-links.cjs
+      - name: Validate ten-caption production and delivery quality gates
+        run: python3 -m unittest discover -s microservices/tests -v
       - name: Install free headless browser library
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Actual desktop and mobile browser verification

@@ -1,0 +1,109 @@
+{
+  "reference": "DEMO-FIETS-001",
+  "briefing_complete": true,
+  "order_confirmed": true,
+  "human_editor_reviewed": false,
+  "note": "Fictief, niet leverbaar totdat menselijke redactiereview plaatsvindt; data alleen demo.",
+  "posts": [
+    {
+      "number": 1,
+      "publish_date": "2026-11-16",
+      "platform": "Instagram",
+      "angle": "Probleem herkennen",
+      "caption": "Fietsband zakt steeds iets verder in? Controleer eerst of het ventiel goed vastzit. Blijft de band leeglopen, laat hem dan nakijken voordat je een lange rit maakt.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 2,
+      "publish_date": "2026-11-18",
+      "platform": "Instagram",
+      "angle": "Mini-checklist",
+      "caption": "Drie dingen om vóór een fietstocht te controleren: bandenspanning, remwerking en verlichting. Een korte check helpt verrassingen onderweg te voorkomen.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 3,
+      "publish_date": "2026-11-20",
+      "platform": "Instagram",
+      "angle": "Vraag aan de klant",
+      "caption": "Wat vergeet jij het vaakst vóór vertrek: je fietsslot, je lampje of je bidon? Laat het weten in de reacties.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 4,
+      "publish_date": "2026-11-23",
+      "platform": "Instagram",
+      "angle": "Service-uitleg",
+      "caption": "Een piepende rem kan verschillende oorzaken hebben. Ga niet zomaar sleutelen als je niet weet waar het geluid vandaan komt; laat de rem indien nodig inspecteren.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 5,
+      "publish_date": "2026-11-25",
+      "platform": "Instagram",
+      "angle": "Onderhoudstip",
+      "caption": "Maak je fietsketting schoon met een geschikt middel en breng daarna de juiste kettingsmering aan. Controleer altijd de instructies van de fabrikant.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 6,
+      "publish_date": "2026-11-27",
+      "platform": "Instagram",
+      "angle": "Veelgestelde vraag",
+      "caption": "Wanneer moet een fietsband vervangen worden? Dat hangt onder andere af van slijtage en beschadigingen. Bij twijfel: laat de band controleren.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 7,
+      "publish_date": "2026-11-30",
+      "platform": "Instagram",
+      "angle": "Seizoensinhoud",
+      "caption": "Meer regen onderweg? Maak je verlichting zichtbaar en controleer regelmatig je remmen. Pas je snelheid aan de omstandigheden aan.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 8,
+      "publish_date": "2026-12-02",
+      "platform": "Instagram",
+      "angle": "Achter de schermen",
+      "caption": "Laat een korte video zien van een veilige onderhoudscheck in de werkplaats. Film alleen met toestemming en zonder klantgegevens in beeld.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 9,
+      "publish_date": "2026-12-04",
+      "platform": "Instagram",
+      "angle": "Keuzehulp",
+      "caption": "Een stadsfiets en een sportfiets vragen soms ander onderhoud. Vertel in de reacties welk type fiets jij gebruikt.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    },
+    {
+      "number": 10,
+      "publish_date": "2026-12-07",
+      "platform": "Instagram",
+      "angle": "Zachte call-to-action",
+      "caption": "Heb je een vraag over je fiets? Stuur eerst een beschrijving van het probleem. De winkel kan daarna aangeven of een controle nodig is en welke kosten besproken worden.",
+      "cta": "Stel gerust een vraag over fietscontrole.",
+      "fact_check": "needs_customer_confirmation",
+      "editor_note": "Fictief voorbeeld; echte fietszaak moet advies en aanbod verifiëren."
+    }
+  ]
+}
