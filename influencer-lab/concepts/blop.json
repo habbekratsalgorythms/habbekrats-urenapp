@@ -1,0 +1,69 @@
+{
+  "id": "blop",
+  "working_name": "Blop",
+  "name_status": "WORKING_NAME_NOT_TRADEMARK_VERIFIED",
+  "art_direction": "Small translucent mint-green alien blob with three soft antenna tufts, oversized dark-purple eyes, tiny brass monocle and deliberately ill-fitting navy business suit with crooked yellow tie. Wholly original non-human character designed for lightweight 2D rigging rather than photorealistic human video.",
+  "personality": [
+    "Alien anthropologist exploring normal gadgets",
+    "earnestly strange and curious",
+    "always reports 'species observations'",
+    "practical testing despite absurd framing"
+  ],
+  "voice": "Original soft curious nasal alien voice with gentle synthesized pitch modulation; keep intelligible and no imitation of established characters.",
+  "quirk": "Records every ordinary device as an inexplicable 'EARTH ARTIFACT' and uses a fake bureaucratic alien checklist.",
+  "audience": "International shortform tech/gadget audience with humor-first hooks",
+  "content_formats": [
+    "Earth Artifact Review",
+    "Why Humans Do This",
+    "Blop Learns One Useful Trick"
+  ],
+  "monetization": [
+    "Creative commission original character explainer video for clients",
+    "Verified accessory affiliate only where commercially and factually suitable"
+  ],
+  "pilot": {
+    "title": "Blop Discovers the USB-C Cable",
+    "language": "English",
+    "seconds": 18,
+    "commercially_released": false,
+    "hook": "EARTH ARTIFACT #001",
+    "sample_script": "Blop: Humans made a cable. They made both ends look the same. Then made chargers with seventeen shapes. Fascinating. My advice? Check the connector AND the power rating. End transmission.",
+    "shots": [
+      {
+        "start": 0,
+        "end": 2,
+        "visual": "Blop bursts out of original drawn spaceship dossier",
+        "overlay": "ARTIFACT #001",
+        "sfx": "original radio click"
+      },
+      {
+        "start": 2,
+        "end": 5,
+        "visual": "Original generic unbranded cable rotates in view",
+        "overlay": "EARTH CABLE",
+        "sfx": "original laser beep"
+      },
+      {
+        "start": 5,
+        "end": 8,
+        "visual": "Silly grid of abstract connector shapes; no borrowed products",
+        "overlay": "SO MANY SHAPES",
+        "sfx": "original ticking"
+      },
+      {
+        "start": 8,
+        "end": 13,
+        "visual": "Two highlighted original diagrams: connector shape, charging rating",
+        "overlay": "CHECK BOTH",
+        "sfx": "original duo clicks"
+      },
+      {
+        "start": 13,
+        "end": 18,
+        "visual": "Blop stamps alien dossier then nods solemnly",
+        "overlay": "END TRANSMISSION",
+        "sfx": "original synth ping"
+      }
+    ]
+  }
+}

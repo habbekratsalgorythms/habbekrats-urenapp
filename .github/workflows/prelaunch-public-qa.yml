@@ -8,6 +8,8 @@ on:
       - 'studio/**'
       - 'offertecalculator/**'
       - 'microservices/**'
+      - 'influencer-lab/**'
+      - 'PROJECT_PLANNING.md'
       - 'affiliate/**'
       - 'klyptiq/**'
       - 'uren/**'
@@ -28,6 +30,8 @@ jobs:
         run: node tests/check-links.cjs
       - name: Validate ten-caption production and delivery quality gates
         run: python3 -m unittest discover -s microservices/tests -v
+      - name: Verify all three character pilot outlines and budget-safe unlaunched status
+        run: python3 -m unittest discover -s influencer-lab/tests -v
       - name: Install free headless browser library
         run: npm install --no-save --no-package-lock playwright-core@1.56.1
       - name: Actual desktop and mobile browser verification
