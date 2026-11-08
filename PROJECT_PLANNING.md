@@ -37,7 +37,7 @@ Prijs en abonnementen: NIET DEFINITIEF.
 
 ## 4. Klyptiq Gaming
 Commerciële gebruiksrechten Rockstar: **NIET BEVESTIGD**. V3/V4 officiële GTA VI-beelden = interne/niet-commerciële review; niet verkopen, sponsoren of platformadvertenties erop inschakelen zonder specifieke rechtencontrole/toestemming. Rockstar's officiële policy: https://support.rockstargames.com/articles/7bNaeoMFTV0iUDGhStTXvz/policy-on-posting-copyrighted-rockstar-games-material . YouTube-gamebeleid: https://support.google.com/youtube/answer/138161 . Bouw parallel eigen rechtenzekere content (gaminghardware, eigen geanimeerde uitleg, eigen productdemo's) om commerciële pilots niet te blokkeren.
-Accountbeveiliging en 2FA: Jesse, buiten GPT. Geen wijzigingen aan zijn profielen zonder expliciete opdracht.
+**Afgerond (gebruikersbevestiging 8 november 2026):** Jesse heeft 2FA geactiveerd waar het platform dit mogelijk maakt. Geen openstaande 2FA-installatietaak meer; eventuele toekomstige beveiligingscontroles staan los van deze afgeronde opdracht.
 
 ### Klyptiq — goedgekeurde monetisatiestrategie, 8 november 2026
 **EIGENAAR GO** voor verdere ontwikkeling, maar niet voor ongecontroleerde publicatie of extra advertentie-uitgaven. Combineer op termijn:
@@ -46,7 +46,7 @@ Accountbeveiliging en 2FA: Jesse, buiten GPT. Geen wijzigingen aan zijn profiele
 3. `unpaid_game_analysis`: echte inhoudelijke kritiek/nieuws over grote games, eventueel met proportionele fragmenten. **MONETIZATION OFF ALLEEN IS GEEN AUTEURSRECHTELIJKE TOESTEMMING**; een op publiekstrekkende groei gericht commercieel kanaal krijgt geen automatische Rockstar-fanlicentie. Per publicatie Nederlands citaatrecht artikel 15a + naburige rechten, bron, concrete kritiek, proportionaliteit, uitgever, rechten, sponsoren en platformvorm toetsen. Quote-only cases vereisen menselijke/juridische vrijgave van exacte montage.
 **Per post technische check:** Klyptiq repo `scripts/publication_rights_preflight.py` + `scripts/per_post_revenue_preflight.py` en `docs/PER_POST_MONETIZATION.md`. YouTube longform biedt per-video Off; YouTube Shorts, TikTok Creator Rewards en Instagram bieden geen universeel geverifieerde per-post-uitschakelaar via onze Metricool connector. Metricool `draft:true` en `autoPublish:false` slaan NIET op inkomsten.
 **Geverifieerde Metricool status 8 november 2026:** alle 38 toen bekende voorgenomen Instagram-posts van 8 t/m 17 november zijn behouden als concepten (`draft:true`, `autoPublish:false`), na het veilig uitzetten van 14 plus 24 oudere ongecontroleerde Rockstar beeldposts. Deze telling beschrijft een momentopname, niet een permanente blokkade: dagelijkse agent kan nieuwe eigen-rechtenzekere content inplannen indien aantoonbaar geverifieerd. De automatiseringsinstructie is aangescherpt voor drie categorieën; geen automatisch betalen en nooit twijfelachtige Rockstar-posts zonder controle.
-**2FA:** Jesse, buiten GPT; geen wijzigingen in social accounts of budgetten door deze classificatie.
+**2FA-status:** afgerond voor zover beschikbaar, door gebruiker bevestigd; verwijderd uit openstaande taken. Deze classificatie wijzigt geen social accounts of budgetten.
 
 
 ## 5. Affiliate / virtuele influencer
