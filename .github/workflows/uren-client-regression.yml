@@ -1,0 +1,28 @@
+name: Urenapp client dossier isolation regression
+on:
+  push:
+    branches: [feature/uren-client-dossiers-hotfix-20261108]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'tests/verify.cjs'
+      - '.github/workflows/uren-client-regression.yml'
+permissions:
+  contents: read
+jobs:
+  client-boundaries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify per-client list, monthly sums, CSV, and >1000 page load
+        run: node tests/verify.cjs
+      - name: Confirm public pages still have no broken internal URLs
+        run: node tests/check-links.cjs
+      - name: Detect unintended privileged keys
+        run: |
+          ! git grep -nE '(sb_secret_|service_role|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- '*.html'
