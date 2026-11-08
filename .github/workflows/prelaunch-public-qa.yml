@@ -1,0 +1,43 @@
+name: Safe public prelaunch release gate
+on:
+  push:
+    branches: [feature/public-prelaunch-20261108]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'studio/**'
+      - 'offertecalculator/**'
+      - 'microservices/**'
+      - 'affiliate/**'
+      - 'klyptiq/**'
+      - 'uren/**'
+      - 'tests/**'
+      - '.github/workflows/prelaunch-public-qa.yml'
+permissions:
+  contents: read
+jobs:
+  website-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate 9 public landing pages, internal links, and assets
+        run: node tests/check-links.cjs
+      - name: Install free headless browser library
+        run: npm install --no-save --no-package-lock playwright-core@1.56.1
+      - name: Actual desktop and mobile browser verification
+        run: node tests/browser-qa.cjs
+      - name: Ensure no private credentials inside public HTML
+        run: |
+          ! git grep -nE '(sb_secret_|service_role|sk-[A-Za-z0-9]{20,}|-----BEGIN PRIVATE KEY-----)' -- '*.html'
+      - name: Save review screenshots and CSV
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Habbekrats-public-prelaunch-browser-QA
+          path: qa-screenshots/
+          if-no-files-found: ignore
+          retention-days: 14
