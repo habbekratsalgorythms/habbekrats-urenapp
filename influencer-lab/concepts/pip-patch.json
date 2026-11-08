@@ -1,0 +1,76 @@
+{
+  "id": "pip-patch",
+  "working_name": "Pip & Patch",
+  "name_status": "WORKING_NAME_NOT_TRADEMARK_VERIFIED",
+  "art_direction": "Exaggerated semi-realistic young adult virtual host with a bright orange asymmetrical hair streak and oversize deep-teal utility jacket, paired with tiny floating round blue robot Patch with one glowing eye and expressive eyebrows. Two original cartoon-like characters, never a copy of a known animation franchise.",
+  "personality": [
+    "Pip is fearless curious human-like host",
+    "Patch is sarcastic pint-sized robot",
+    "Argument turns into a practical takeaway",
+    "Warm absurdist humor"
+  ],
+  "voice": "Pip expressive humanlike original synthetic voice; Patch distinct pitched ORIGINAL processed robot voice; no celebrity imitation.",
+  "quirk": "Patch carries a floating red 'NOPE' rubber stamp and interrupts exaggerated AI promises every time.",
+  "audience": "Young creators and practical tech beginners",
+  "content_formats": [
+    "Patch interrupts the internet",
+    "Good idea / terrible prompt",
+    "Pip tests, Patch judges"
+  ],
+  "monetization": [
+    "Sponsored original animation segments, clearly disclosed",
+    "Transparent affiliate links to independently tested tools"
+  ],
+  "pilot": {
+    "title": "Patch Fixes a Terrible Prompt",
+    "language": "English",
+    "seconds": 18,
+    "commercially_released": false,
+    "hook": "I ASKED AI FOR A BUSINESS.",
+    "sample_script": "Pip: I asked an AI for a business idea. Patch: You gave it three words. Pip: And it gave me a space laundromat. Patch: Try a budget, audience and problem. Pip: Oh. A real answer. Patch: Shocking.",
+    "shots": [
+      {
+        "start": 0,
+        "end": 2,
+        "visual": "Original orange-streak avatar throws up a blank prompt bubble",
+        "overlay": "A BUSINESS IDEA?",
+        "sfx": "original boop"
+      },
+      {
+        "start": 2,
+        "end": 5,
+        "visual": "Robot zooms in to a three-word comic prompt",
+        "overlay": "THREE WORDS.",
+        "sfx": "original record-stop"
+      },
+      {
+        "start": 5,
+        "end": 8,
+        "visual": "Absurd custom vector space laundromat spins with sock satellites",
+        "overlay": "SPACE LAUNDROMAT",
+        "sfx": "original synth whirl"
+      },
+      {
+        "start": 8,
+        "end": 12,
+        "visual": "Patch stamps a bright NOPE over the joke",
+        "overlay": "ADD CONTEXT",
+        "sfx": "original stamp"
+      },
+      {
+        "start": 12,
+        "end": 15,
+        "visual": "Three original UI chips: Budget, Audience, Problem",
+        "overlay": "BUDGET / WHO / WHY",
+        "sfx": "original taps"
+      },
+      {
+        "start": 15,
+        "end": 18,
+        "visual": "Pip and Patch face camera, easy comedic final beat",
+        "overlay": "BETTER PROMPTS",
+        "sfx": "original ending ping"
+      }
+    ]
+  }
+}
