@@ -1,0 +1,69 @@
+{
+  "id": "vexa-volt",
+  "working_name": "Vexa Volt",
+  "name_status": "WORKING_NAME_NOT_TRADEMARK_VERIFIED",
+  "art_direction": "Semi-realistic expressive retrofuture human avatar; asymmetrical silver-lilac haircut, intentionally oversized geometric translucent glasses, one tiny floating antenna hairpin, mustard-yellow blazer, holographic notepad. Original visual identity, not a real person's likeness.",
+  "personality": [
+    "Clever skeptical tester",
+    "dry deadpan humor",
+    "obsessive about time saved rather than hype",
+    "insists on evidence"
+  ],
+  "voice": "Confident, clipped, witty, originally synthesized; avoid celebrity or voice-clone likeness.",
+  "quirk": "Keeps a real-looking 'BULLSH*T DETECTOR' meter that counts unsupported claims but makes clear it's a comedic prop, not a verified benchmark.",
+  "audience": "Dutch/English AI-curious small business owners and students",
+  "content_formats": [
+    "AI-factcheck courtroom",
+    "One-minute tool reality check",
+    "Marketing claim vs. actual measured test"
+  ],
+  "monetization": [
+    "Transparent AI tools affiliate, after tested actual product",
+    "Paid explainer production for software brands after rights/advertiser approvals"
+  ],
+  "pilot": {
+    "title": "Vexa vs. the Magic Email Button",
+    "language": "English",
+    "seconds": 19,
+    "commercially_released": false,
+    "hook": "ONE CLICK? REALLY?",
+    "sample_script": "They say AI writes your whole email in one click. Cute. My test has three steps: facts, tone, then edit. If you skip the facts, you save time writing nonsense. Verdict? Useful assistant. Not magic.",
+    "shots": [
+      {
+        "start": 0,
+        "end": 2,
+        "visual": "Face close-up with neon warning meter; no tool screenshots",
+        "overlay": "ONE CLICK?",
+        "sfx": "original click"
+      },
+      {
+        "start": 2,
+        "end": 5,
+        "visual": "Original vector cartoon email flying onto desk",
+        "overlay": "REALLY?",
+        "sfx": "original pop"
+      },
+      {
+        "start": 5,
+        "end": 9,
+        "visual": "Three original labeled cards appear rapidly",
+        "overlay": "FACTS • TONE • EDIT",
+        "sfx": "original staccato cues"
+      },
+      {
+        "start": 9,
+        "end": 13,
+        "visual": "Comedy meter blasts red 'UNVERIFIED' for fictional claim",
+        "overlay": "CHECK CLAIMS",
+        "sfx": "original soft buzzer"
+      },
+      {
+        "start": 13,
+        "end": 19,
+        "visual": "Avatar smiles; three checks become practical summary",
+        "overlay": "ASSISTANT ≠ MAGIC",
+        "sfx": "original resolution"
+      }
+    ]
+  }
+}
